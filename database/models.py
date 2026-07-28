@@ -11,7 +11,7 @@ class Product(Base):
     Stock = Column(Integer)
 
 class Customer (Base):
-    __tablename__ = "cutomers"
+    __tablename__ = "customers"
 
     CustomerID = Column(Integer, primary_key=True, index=True)
     CustomerName = Column(String)
