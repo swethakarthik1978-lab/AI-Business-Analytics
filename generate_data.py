@@ -107,3 +107,27 @@ with open("data/finance.csv", "w", newline="") as file:
         ])
 
 print("finance.csv created successfully")
+
+sales = [
+    [1,1001,101,1,2,499.99,999.98,"2026-07-01"],
+    [2,1002,102,2,1,899.00,899.00,"2026-07-02"],
+    [3,1003,103,3,3,299.50,898.50,"2026-07-03"]
+]
+
+with open("data/sales.csv","w",newline="") as file:
+    writer = csv.writer(file)
+
+    writer.writerow([
+        "SaleID",
+        "OrderID",
+        "ProductID",
+        "CustomerID",
+        "Quantity",
+        "UnitPrice",
+        "TotalAmount",
+        "SaleDate"
+    ])
+
+    writer.writerows(sales)
+
+print("sales.csv created successfully")

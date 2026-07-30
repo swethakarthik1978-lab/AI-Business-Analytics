@@ -1,101 +1,101 @@
 ProductID,ProductName,Category,Price,Stock
-1,Mouse,Electronics,11987,132
-2,Laptop,Furniture,39282,130
-3,Keyboard,Furniture,76525,199
-4,Mouse,Furniture,40076,28
-5,T-Shirt,Books,37184,66
-6,Tablet,Furniture,44065,17
-7,Sofa,Books,69039,132
-8,Camera,Clothing,52241,17
-9,Speaker,Furniture,2641,169
-10,Jacket,Home Appliances,71211,57
-11,Speaker,Clothing,8579,82
-12,Printer,Furniture,22996,95
-13,Chair,Furniture,75622,94
-14,Mouse,Electronics,77005,69
-15,Jacket,Clothing,1078,112
-16,Keyboard,Electronics,36618,37
-17,Book,Home Appliances,31439,63
-18,Printer,Clothing,66750,131
-19,Camera,Home Appliances,69789,24
-20,Jacket,Clothing,75091,173
-21,Printer,Electronics,67958,176
-22,Book,Home Appliances,10261,173
-23,Chair,Electronics,73845,7
-24,Jacket,Electronics,8913,45
-25,Printer,Books,17941,97
-26,Tablet,Furniture,5822,25
-27,T-Shirt,Home Appliances,6031,24
-28,Jacket,Electronics,59631,116
-29,Chair,Home Appliances,26412,162
-30,Printer,Books,42535,163
-31,Jeans,Books,12560,62
-32,Mouse,Clothing,40271,41
-33,Speaker,Home Appliances,22832,81
-34,Table,Electronics,11011,175
-35,T-Shirt,Furniture,50328,56
-36,Chair,Clothing,32068,24
-37,Printer,Clothing,25090,189
-38,Mouse,Clothing,46348,52
-39,Jeans,Books,70434,160
-40,Printer,Furniture,14089,53
-41,Tablet,Clothing,61317,153
-42,Book,Electronics,59520,59
-43,Jacket,Electronics,72971,46
-44,Speaker,Clothing,5348,127
-45,Laptop,Home Appliances,59540,160
-46,Jeans,Electronics,955,24
-47,Laptop,Books,24614,54
-48,Speaker,Clothing,65562,95
-49,Laptop,Furniture,21056,42
-50,Camera,Furniture,46640,82
-51,Speaker,Home Appliances,23951,134
-52,T-Shirt,Books,25433,17
-53,Laptop,Clothing,49879,88
-54,Printer,Clothing,62031,95
-55,Mouse,Furniture,53989,171
-56,Keyboard,Books,49359,184
-57,Mouse,Furniture,1115,100
-58,Laptop,Books,33684,79
-59,Printer,Books,6257,103
-60,Tablet,Furniture,20555,101
-61,Jeans,Electronics,1703,190
-62,Laptop,Furniture,22280,116
-63,Mouse,Furniture,73613,182
-64,Camera,Home Appliances,73398,20
-65,Table,Books,57278,44
-66,Table,Home Appliances,77825,27
-67,Table,Home Appliances,59501,89
-68,Laptop,Electronics,62721,73
-69,Camera,Electronics,58175,60
-70,Laptop,Electronics,37895,174
-71,Camera,Furniture,51915,29
-72,Table,Books,33866,149
-73,Jacket,Books,21432,194
-74,Sofa,Furniture,26061,13
-75,Book,Books,64150,79
-76,Tablet,Home Appliances,72966,157
-77,Camera,Books,71870,34
-78,T-Shirt,Clothing,8905,97
-79,Mouse,Books,66165,136
-80,Keyboard,Electronics,43282,39
-81,Monitor,Home Appliances,62202,49
-82,Laptop,Home Appliances,62255,5
-83,Monitor,Home Appliances,45577,162
-84,Laptop,Home Appliances,20654,119
-85,Monitor,Clothing,7727,127
-86,Chair,Electronics,22313,158
-87,Jacket,Clothing,40089,125
-88,Tablet,Furniture,19159,133
-89,Tablet,Electronics,53612,146
-90,Laptop,Clothing,23727,75
-91,Tablet,Furniture,54988,54
-92,T-Shirt,Clothing,41806,116
-93,Monitor,Furniture,46731,11
-94,T-Shirt,Home Appliances,24289,183
-95,Jeans,Clothing,9488,93
-96,Mouse,Furniture,11864,22
-97,Table,Books,56169,152
-98,T-Shirt,Furniture,36835,48
-99,Book,Clothing,6813,13
-100,Chair,Clothing,46096,39
+1,Printer,Home Appliances,28798,95
+2,Jeans,Furniture,79719,176
+3,Laptop,Electronics,77368,81
+4,T-Shirt,Electronics,33537,172
+5,Monitor,Electronics,39635,81
+6,Chair,Home Appliances,17419,19
+7,Book,Books,43344,115
+8,Sofa,Books,78019,184
+9,Chair,Electronics,4612,187
+10,Jeans,Clothing,52894,163
+11,Laptop,Furniture,65405,123
+12,Book,Furniture,18948,166
+13,Jacket,Home Appliances,44494,25
+14,Book,Furniture,52363,190
+15,Chair,Books,43615,72
+16,Laptop,Clothing,36237,24
+17,Camera,Home Appliances,51270,128
+18,Jacket,Electronics,47863,139
+19,Book,Books,22000,83
+20,Book,Home Appliances,41867,5
+21,Sofa,Books,41118,76
+22,Mouse,Clothing,17174,70
+23,Jeans,Electronics,6416,76
+24,Book,Books,1276,29
+25,Keyboard,Clothing,34492,57
+26,Sofa,Home Appliances,47064,171
+27,Speaker,Electronics,13709,112
+28,Sofa,Home Appliances,13674,164
+29,Monitor,Clothing,24907,165
+30,Tablet,Electronics,70649,53
+31,Monitor,Clothing,73154,163
+32,Monitor,Furniture,71202,31
+33,Speaker,Home Appliances,67567,80
+34,Laptop,Furniture,58083,170
+35,Laptop,Books,60242,39
+36,Book,Electronics,40228,23
+37,Monitor,Furniture,69494,26
+38,Printer,Electronics,18324,105
+39,Camera,Clothing,22970,135
+40,T-Shirt,Clothing,33453,171
+41,Printer,Electronics,74614,178
+42,Monitor,Electronics,50873,82
+43,Laptop,Furniture,42713,25
+44,Speaker,Clothing,76368,174
+45,Table,Electronics,980,151
+46,T-Shirt,Books,40828,111
+47,Book,Clothing,40763,94
+48,Book,Clothing,3056,146
+49,Book,Home Appliances,51526,90
+50,Keyboard,Furniture,56960,140
+51,T-Shirt,Furniture,72774,144
+52,Printer,Clothing,53253,27
+53,Monitor,Electronics,20062,59
+54,Jeans,Books,55385,63
+55,Speaker,Home Appliances,32952,51
+56,Keyboard,Clothing,48675,36
+57,Monitor,Books,39680,59
+58,Book,Electronics,43385,80
+59,Jacket,Furniture,29935,108
+60,Jeans,Electronics,7478,183
+61,Camera,Furniture,29941,104
+62,Jacket,Electronics,10001,176
+63,Chair,Books,42064,53
+64,Book,Home Appliances,47783,144
+65,Jacket,Home Appliances,44483,144
+66,Speaker,Books,9338,170
+67,Monitor,Electronics,44318,94
+68,Printer,Electronics,59653,138
+69,Table,Books,34306,94
+70,T-Shirt,Clothing,68091,71
+71,Book,Electronics,26111,46
+72,Sofa,Furniture,42193,80
+73,Sofa,Home Appliances,68516,198
+74,Keyboard,Home Appliances,10608,64
+75,Jeans,Clothing,60959,136
+76,Mouse,Clothing,59130,188
+77,Book,Clothing,7096,97
+78,Jacket,Clothing,13086,159
+79,Sofa,Clothing,59355,178
+80,Monitor,Electronics,70682,40
+81,Sofa,Electronics,31397,15
+82,Jacket,Clothing,63912,41
+83,Jeans,Furniture,52577,102
+84,Camera,Clothing,15972,179
+85,Sofa,Electronics,36094,166
+86,Laptop,Home Appliances,76192,98
+87,Printer,Books,53455,84
+88,Monitor,Books,7331,40
+89,Table,Furniture,51655,35
+90,Jeans,Electronics,71182,10
+91,Jacket,Home Appliances,44545,68
+92,Keyboard,Furniture,44337,174
+93,Printer,Furniture,10491,120
+94,Chair,Electronics,43816,109
+95,Chair,Furniture,30057,13
+96,Camera,Books,77581,196
+97,Camera,Home Appliances,14830,32
+98,T-Shirt,Clothing,12210,21
+99,Speaker,Home Appliances,69489,124
+100,Laptop,Furniture,76121,41
