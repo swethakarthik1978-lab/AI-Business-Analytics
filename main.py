@@ -2,6 +2,8 @@ from config import PROJECT_NAME, VERSION
 from database.database import engine, Base, SessionLocal
 from database.models import Product, Customer, Order, Inventory, Finance
 from database.crud import * 
+from data_collection import load_data
+from preprocessing.clean_data import clean_dataframe
 
 def main():
     print("=" * 50)
@@ -24,6 +26,6 @@ def main():
     print(p.ProductID, p.ProductName, p.Stock)
 
     db.close()
-    
+
 if __name__ == "__main__": 
     main() 

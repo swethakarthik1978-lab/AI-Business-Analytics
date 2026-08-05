@@ -1,5 +1,17 @@
-print("MISSING VALUES")
-print(sales.isnull().sum())
+import pandas as pd
+def clean_dataframe(df)
 
-sales["Quantity"] = sales["Quantity"].fillna(sales["Quantity"].mean())
-sales["TotalAmount"] = sales["TotalAmount"].fillna(sales["TotalAmount"].mean())
+print("MISSING VALUES")
+print(df.isnull().sum())
+
+for column in df.columns:
+
+        if df[column].dtype == "object":
+
+            df[column] = df[column].fillna("Unknown")
+
+        else:
+
+            df[column] = df[column].fillna(df[column].mean())
+
+    return df
