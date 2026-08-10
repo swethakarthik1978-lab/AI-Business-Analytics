@@ -4,7 +4,7 @@ from database.models import Product, Customer, Order, Inventory, Finance
 from database.crud import *
 from data_collection import load_data
 from preprocessing.clean_data import clean_dataframe
-
+from preprocessing.feature_engineering import create_features
 
 def main():
     print("=" * 50)
@@ -35,6 +35,10 @@ def main():
     add_products(db, clean_datasets["products"])
     add_inventory(db, clean_datasets["inventory"])
     add_finance(db, clean_datasets["finance"])
+
+    df = create_features(df)
+
+    print(clean_datasets["sales"])
 
     db.close()
 
