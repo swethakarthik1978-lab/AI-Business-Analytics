@@ -6,6 +6,7 @@ from data_collection import load_data
 from preprocessing.clean_data import clean_dataframe
 from preprocessing.feature_engineering import create_features
 
+
 def main():
     print("=" * 50)
     print(PROJECT_NAME)
@@ -26,6 +27,20 @@ def main():
         print("CLEANING", name)
         clean_datasets[name] = clean_dataframe(df)
 
+    print("FEATURE ENGINEERING")
+
+    for name, df in clean_datasets.items():
+        feature_df = create_features(df)
+
+        clean_datasets[name] = feature_df
+
+        feature_df.to_csv(
+            f"data/{name}.csv",
+            index=False
+        )
+
+        print(name, "updated successfully")
+
     Base.metadata.create_all(bind=engine)
     print("All tables created successfully!")
 
@@ -35,8 +50,6 @@ def main():
     add_products(db, clean_datasets["products"])
     add_inventory(db, clean_datasets["inventory"])
     add_finance(db, clean_datasets["finance"])
-
-    df = create_features(df)
 
     print(clean_datasets["sales"])
 

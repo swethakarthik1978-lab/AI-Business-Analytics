@@ -1,4 +1,4 @@
-SaleID,OrderID,ProductID,CustomerID,Quantity,UnitPrice,TotalAmount,SaleDate
-1,1001,101,1,2,499.99,999.98,2026-07-01
-2,1002,102,2,1,899.0,,2026-07-02
-3,1003,103,3,3,,898.5,2026-07-03
+SaleID,OrderID,ProductID,CustomerID,Quantity,UnitPrice,TotalAmount,SaleDate,TotalSales
+1,1001,101,1,2,499.99,999.98,2026-07-01,999.98
+2,1002,102,2,1,899.0,949.24,2026-07-02,899.0
+3,1003,103,3,3,699.495,898.5,2026-07-03,2098.485

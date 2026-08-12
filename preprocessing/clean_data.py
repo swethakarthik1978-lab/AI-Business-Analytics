@@ -2,7 +2,6 @@ import pandas as pd
 
 
 def clean_dataframe(df):
-   
 
     print("MISSING VALUES")
     print(df.isnull().sum())

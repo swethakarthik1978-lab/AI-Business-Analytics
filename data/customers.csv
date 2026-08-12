@@ -1,5 +1,5 @@
 CustomerID,CustomerName,Email,Phone,City
-1,Jack Mayo,williamstony@example.net,0837253241,West Robert
+1,Jack Mayo,williamstony@example.net,837253241,West Robert
 2,Emily Osborn,madison83@example.org,2528433038,New Gina
 3,Michael Khan,tracy87@example.org,7435644533,Lake Brittanyland
 4,Mary Davis,zrangel@example.com,7043939909,New Anne
@@ -8,10 +8,10 @@ CustomerID,CustomerName,Email,Phone,City
 7,Lori Garrison,wilsontimothy@example.net,2871297236,Lake Sean
 8,Matthew Kelly,tiffany06@example.com,6594430348,Richardmouth
 9,Mrs. Susan Kelly,hmarquez@example.com,5137370287,West Elizabethton
-10,Dustin Jones,lunajason@example.net,0393685539,Lawrencestad
+10,Dustin Jones,lunajason@example.net,393685539,Lawrencestad
 11,Angela Cruz,tcastro@example.com,9874326559,West Aaron
 12,Katrina Smith,emily29@example.net,5934515543,New Corey
-13,Cynthia Lawrence,nmoses@example.org,0008816381,New Briana
+13,Cynthia Lawrence,nmoses@example.org,8816381,New Briana
 14,Joseph Gomez,robert83@example.net,9609894919,Lake Nancyland
 15,Richard Miller Jr.,alisha34@example.com,9468005104,West Laurafort
 16,Shannon Melendez,lisaanthony@example.org,7614262979,South Martin
@@ -19,7 +19,7 @@ CustomerID,CustomerName,Email,Phone,City
 18,Joshua Turner,charlenelamb@example.net,1657856825,Freemanport
 19,Gregory Harrison,rebeccathompson@example.org,7230153119,North Heather
 20,Scott Edwards,whiteanna@example.net,4516861322,East Jamesview
-21,Amanda Woodard,amanda79@example.com,0009078567,Stokesmouth
+21,Amanda Woodard,amanda79@example.com,9078567,Stokesmouth
 22,Justin Tran,xrobinson@example.com,5715972150,Jorgeview
 23,Leslie Stone,mortonamanda@example.net,1670885889,Christineside
 24,Shannon Johnson,matthewnorris@example.org,5037638744,Port Jennifer
@@ -28,10 +28,10 @@ CustomerID,CustomerName,Email,Phone,City
 27,Adam Young,bellcarmen@example.net,2786566642,West Randall
 28,William Harris,katherine84@example.org,5850904313,Port Angela
 29,James Bullock,randyperry@example.org,5289847392,Sarahburgh
-30,Yvette Holloway,michael36@example.com,0811176569,South Jenniferchester
+30,Yvette Holloway,michael36@example.com,811176569,South Jenniferchester
 31,Donna Martinez,lisataylor@example.net,5113089943,Wardfort
 32,David Martin,samanthaallen@example.org,8297767435,North Craig
-33,Kathryn Jimenez,acostamichael@example.org,0585147948,Gonzalezshire
+33,Kathryn Jimenez,acostamichael@example.org,585147948,Gonzalezshire
 34,Craig Wolf,gbrown@example.com,8295386528,North Manueltown
 35,Tammy Chang,ocox@example.com,4483292221,Jessicaport
 36,Keith Wright,davidfoster@example.org,4752258750,South Katherinehaven
@@ -40,7 +40,7 @@ CustomerID,CustomerName,Email,Phone,City
 39,Brian Andrade,tmcdaniel@example.net,8267848758,Chambersside
 40,Diana Peterson,brettcosta@example.net,8165455226,Andrealand
 41,Ryan Boyd,gregory72@example.net,6441070821,Greenland
-42,Angela Cruz,iallen@example.com,0017628961,Huntside
+42,Angela Cruz,iallen@example.com,17628961,Huntside
 43,Amy Salas,kennethbryant@example.org,1559200857,South Danielfurt
 44,Abigail Morgan,zyoung@example.net,6888097230,Jonesstad
 45,Nicole Bailey,jeff76@example.org,3825186214,West Wayneland
@@ -56,13 +56,13 @@ CustomerID,CustomerName,Email,Phone,City
 55,Samuel Robbins,austinsarah@example.com,6475108742,North Sarah
 56,Robert Nolan,penakyle@example.org,3885703904,Dyerchester
 57,Teresa Wong,roger82@example.net,9970448088,Port Isaiahville
-58,Austin Singleton,andrew42@example.org,0372215298,Courtneyshire
+58,Austin Singleton,andrew42@example.org,372215298,Courtneyshire
 59,Lance Cole,charlesdavis@example.org,8511562245,Frankchester
 60,James Dominguez,garciadavid@example.org,1769099319,Scotttown
 61,Bianca Davis,kimberly36@example.net,1795635818,North Caroline
-62,Andrew Fischer,jonesnicole@example.net,0105715187,Watsonfort
+62,Andrew Fischer,jonesnicole@example.net,105715187,Watsonfort
 63,Annette Barnett,angelajohnson@example.com,2683859134,Rasmussenport
-64,Amber Myers,cbanks@example.net,0234493175,Smithfurt
+64,Amber Myers,cbanks@example.net,234493175,Smithfurt
 65,Amanda Vance,alyssasharp@example.com,7551915689,Lauraborough
 66,Allison Neal,thomasryan@example.com,3645717767,North Joseph
 67,Steven Richardson,jessica75@example.org,2871036023,West Christophermouth
@@ -77,10 +77,10 @@ CustomerID,CustomerName,Email,Phone,City
 76,Kevin Irwin,alisharivera@example.net,9431757718,Frederickberg
 77,David Schroeder,angelajones@example.net,4223761125,Aguirrestad
 78,Andres Wells,jsullivan@example.com,1676016211,Brownfurt
-79,Ryan Valdez,reynoldsvicki@example.net,0304977346,Port Jack
+79,Ryan Valdez,reynoldsvicki@example.net,304977346,Port Jack
 80,Nicole Santiago,pughbriana@example.org,5524635593,Hudsonborough
-81,Lawrence Hunter,hannahshaw@example.net,0967185682,Alvaradofort
-82,Joshua Ramsey,juliepowell@example.com,0621340622,South Michael
+81,Lawrence Hunter,hannahshaw@example.net,967185682,Alvaradofort
+82,Joshua Ramsey,juliepowell@example.com,621340622,South Michael
 83,James Price,paul15@example.com,6109808603,South Angelastad
 84,Stephanie Ramos,sean36@example.net,3791996865,Catherinemouth
 85,Carolyn Walker,timothy55@example.org,4506251293,North Cherylfort
@@ -93,7 +93,7 @@ CustomerID,CustomerName,Email,Phone,City
 92,Brandon Ford,hermanbruce@example.org,8206147191,Dorisberg
 93,Cesar Anthony,lebradley@example.com,3002756351,Mccannborough
 94,Christine Kim,karen41@example.com,5249013618,West Dalton
-95,Vicki Nelson,robertbell@example.com,0082990550,Jenniferton
+95,Vicki Nelson,robertbell@example.com,82990550,Jenniferton
 96,Jamie Taylor,ashley64@example.net,4189336614,Samanthafurt
 97,Isabella Soto,chaneylisa@example.com,7909742835,North James
 98,Jeremiah Nash,vhartman@example.net,2274277518,Popeland
