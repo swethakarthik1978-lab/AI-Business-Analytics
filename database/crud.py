@@ -1,3 +1,5 @@
+import pandas as pd
+
 from sqlalchemy.orm import Session
 
 from .models import Product, Customer, Order, Inventory, Finance
@@ -84,33 +86,23 @@ def delete_customer(db: Session, customer_id: int):
 # ORDER CRUD
 # =========================================================
 
-def add_order(db: Session, order: Order):
-    db.add(order)
+def add_orders(db: Session, df):
+
+    for _, row in df.iterrows():
+
+        order = Order(
+            OrderID=int(row["OrderID"]),
+            ProductID=int(row["ProductID"]),
+            CustomerID=int(row["CustomerID"]),
+            Quantity=int(row["Quantity"]),
+            UnitPrice=float(row["UnitPrice"]),
+            TotalAmount=float(row["TotalAmount"]),
+            OrderDate=pd.to_datetime(row["SaleDate"]).date()
+        )
+
+        db.merge(order)
+
     db.commit()
-    db.refresh(order)
-    return order
-
-
-def get_orders(db: Session):
-    return db.query(Order).all()
-
-
-def get_order_by_id(db: Session, order_id: int):
-    return (
-        db.query(Order)
-        .filter(Order.OrderID == order_id)
-        .first()
-    )
-
-
-def delete_order(db: Session, order_id: int):
-    order = get_order_by_id(db, order_id)
-
-    if order:
-        db.delete(order)
-        db.commit()
-
-    return order
 
 
 # =========================================================

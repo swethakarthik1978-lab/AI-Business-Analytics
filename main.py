@@ -14,18 +14,23 @@ def main():
     print("=" * 50)
     print("Welcome to the AI Business Analytics Platform")
 
+
     print("LOADING DATA")
+
     datasets = load_data()
 
     for name, df in datasets.items():
         print(name, df.shape)
 
+
     print("CLEANING DATA")
+
     clean_datasets = {}
 
     for name, df in datasets.items():
         print("CLEANING", name)
         clean_datasets[name] = clean_dataframe(df)
+
 
     print("FEATURE ENGINEERING")
 
@@ -34,6 +39,7 @@ def main():
 
         clean_datasets[name] = feature_df
 
+        # Save updated data back to CSV files
         feature_df.to_csv(
             f"data/{name}.csv",
             index=False
@@ -41,19 +47,56 @@ def main():
 
         print(name, "updated successfully")
 
+
+    sales = clean_datasets["sales"]
+
+    print("=" * 50)
+    print("BUSINESS SUMMARY")
+    print("=" * 50)
+
+    total_sales = sales["TotalSales"].sum()
+    average_sale = sales["TotalSales"].mean()
+    units_sold = sales["Quantity"].sum()
+
+    print("Total Sales: $", round(total_sales, 2))
+    print("Average Sale: $", round(average_sale, 2))
+    print("Units Sold:", int(units_sold))
+
+
     Base.metadata.create_all(bind=engine)
+
     print("All tables created successfully!")
 
     db = SessionLocal()
 
-    add_customers(db, clean_datasets["customers"])
-    add_products(db, clean_datasets["products"])
-    add_inventory(db, clean_datasets["inventory"])
-    add_finance(db, clean_datasets["finance"])
+    add_customers(
+        db,
+        clean_datasets["customers"]
+    )
 
-    print(clean_datasets["sales"])
+    add_products(
+        db,
+        clean_datasets["products"]
+    )
+
+    add_inventory(
+        db,
+        clean_datasets["inventory"]
+    )
+
+    add_finance(
+        db,
+        clean_datasets["finance"]
+    )
+
+    add_orders(
+        db,
+        clean_datasets["sales"]
+    )
 
     db.close()
+
+    print("Database updated successfully!")
 
 
 if __name__ == "__main__":

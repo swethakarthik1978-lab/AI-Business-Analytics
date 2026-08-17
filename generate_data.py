@@ -143,14 +143,53 @@ print("finance.csv created successfully")
 # =========================================================
 # SALES
 # =========================================================
+product_data = []
 
-sales = [
-    [1, 1001, 1, 1, 2, 499.99, 999.98, "2026-07-01"],
-    [2, 1002, 2, 2, 1, 899.00, 899.00, "2026-07-02"],
-    [3, 1003, 3, 3, 3, 299.50, 898.50, "2026-07-03"]
-]
+with open("data/products.csv", "r") as file:
+
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        product_data.append(row)
+
+
+sales = []
+
+for sale_id in range(1, 101):
+
+    order_id = 1000 + sale_id
+
+    product = random.choice(product_data)
+
+    product_id = int(product["ProductID"])
+
+    customer_id = random.randint(1, 100)
+
+    quantity = random.randint(1, 5)
+
+    unit_price = float(product["Price"])
+
+    total_amount = quantity * unit_price
+
+    year = 2026
+    month = random.randint(1, 8)
+    day = random.randint(1, 28)
+
+    sale_date = f"{year}-{month:02d}-{day:02d}"
+
+    sales.append([
+        sale_id,
+        order_id,
+        product_id,
+        customer_id,
+        quantity,
+        unit_price,
+        total_amount,
+        sale_date
+    ])
 
 with open("data/sales.csv", "w", newline="") as file:
+
     writer = csv.writer(file)
 
     writer.writerow([
@@ -165,5 +204,8 @@ with open("data/sales.csv", "w", newline="") as file:
     ])
 
     writer.writerows(sales)
+
+
+    
 
 print("sales.csv created successfully")

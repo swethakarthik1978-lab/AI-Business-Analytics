@@ -37,6 +37,7 @@ class Order(Base):
     Quantity = Column(Integer)
     OrderDate = Column(Date)
     TotalAmount = Column(Float)
+    UnitPrice = Column(Float) 
 
 
 class Inventory(Base):
