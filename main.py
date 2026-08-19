@@ -5,7 +5,7 @@ from database.crud import *
 from data_collection import load_data
 from preprocessing.clean_data import clean_dataframe
 from preprocessing.feature_engineering import create_features
-
+from ML.sales_forecasting import (prepare_sales_data, train_sales_model, predict_sales, save_forecast, plot_actual_vs_predicted)
 
 def main():
     print("=" * 50)
@@ -33,6 +33,8 @@ def main():
 
 
     print("FEATURE ENGINEERING")
+
+
 
     for name, df in clean_datasets.items():
         feature_df = create_features(df)
@@ -97,6 +99,47 @@ def main():
     db.close()
 
     print("Database updated successfully!")
+print("SALES FORECASTING")
+sales = clean_dataframe["sales"]
+daily_sales = prepare_sales_data(sales)
+print("\nDaily sales data:")
+print(daily_sales.head())
+
+# Train model
+model = train_sales_model(daily_sales)
+
+print("\nSales forecasting model trained successfully!")
+
+# Generate predictions
+forecast = predict_sales(
+    model,
+    days=7
+)
+
+print("\nNEXT 7 DAYS SALES FORECAST")
+
+print(
+    forecast.tail(7).to_string(
+        index=False
+    )
+)
+
+# Save forecast
+save_forecast(
+    forecast,
+    "data/sales_forecast.csv"
+)
+
+print("\nSales forecast saved successfully!")
+
+print("\nCreating Actual vs Predicted Sales graph...")
+
+plot_actual_vs_predicted(
+    daily_sales,
+    forecast
+)
+
+print("Sales visualization completed!")
 
 
 if __name__ == "__main__":
