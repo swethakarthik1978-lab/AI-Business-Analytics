@@ -2,20 +2,34 @@ from config import PROJECT_NAME, VERSION
 from database.database import engine, Base, SessionLocal
 from database.models import Product, Customer, Order, Inventory, Finance
 from database.crud import *
+
 from data_collection import load_data
 from preprocessing.clean_data import clean_dataframe
 from preprocessing.feature_engineering import create_features
-from ML.sales_forecasting import (prepare_sales_data, train_sales_model, predict_sales, save_forecast, plot_actual_vs_predicted)
+
+from ML.sales_forecasting import (
+    prepare_sales_data,
+    train_sales_model,
+    predict_sales,
+    save_forecast,
+    plot_actual_vs_predicted
+)
+from analytics.customer_analytics import analyze_customers
 
 def main():
+
     print("=" * 50)
     print(PROJECT_NAME)
     print("Version", VERSION)
     print("=" * 50)
+
     print("Welcome to the AI Business Analytics Platform")
 
+    # -----------------------------------
+    # LOAD DATA
+    # -----------------------------------
 
-    print("LOADING DATA")
+    print("\nLOADING DATA")
 
     datasets = load_data()
 
@@ -23,25 +37,34 @@ def main():
         print(name, df.shape)
 
 
-    print("CLEANING DATA")
+    # -----------------------------------
+    # CLEAN DATA
+    # -----------------------------------
+
+    print("\nCLEANING DATA")
 
     clean_datasets = {}
 
     for name, df in datasets.items():
+
         print("CLEANING", name)
+
         clean_datasets[name] = clean_dataframe(df)
 
 
-    print("FEATURE ENGINEERING")
+    # -----------------------------------
+    # FEATURE ENGINEERING
+    # -----------------------------------
 
-
+    print("\nFEATURE ENGINEERING")
 
     for name, df in clean_datasets.items():
+
         feature_df = create_features(df)
 
         clean_datasets[name] = feature_df
 
-        # Save updated data back to CSV files
+        # Save updated data back to CSV
         feature_df.to_csv(
             f"data/{name}.csv",
             index=False
@@ -49,6 +72,10 @@ def main():
 
         print(name, "updated successfully")
 
+
+    # -----------------------------------
+    # BUSINESS SUMMARY
+    # -----------------------------------
 
     sales = clean_datasets["sales"]
 
@@ -64,6 +91,10 @@ def main():
     print("Average Sale: $", round(average_sale, 2))
     print("Units Sold:", int(units_sold))
 
+
+    # -----------------------------------
+    # DATABASE
+    # -----------------------------------
 
     Base.metadata.create_all(bind=engine)
 
@@ -99,47 +130,67 @@ def main():
     db.close()
 
     print("Database updated successfully!")
-print("SALES FORECASTING")
-sales = clean_dataframe["sales"]
-daily_sales = prepare_sales_data(sales)
-print("\nDaily sales data:")
-print(daily_sales.head())
 
-# Train model
-model = train_sales_model(daily_sales)
 
-print("\nSales forecasting model trained successfully!")
+    # -----------------------------------
+    # SALES FORECASTING
+    # -----------------------------------
 
-# Generate predictions
-forecast = predict_sales(
-    model,
-    days=7
-)
+    print("\n" + "=" * 50)
+    print("SALES FORECASTING")
+    print("=" * 50)
 
-print("\nNEXT 7 DAYS SALES FORECAST")
+    sales = clean_datasets["sales"]
 
-print(
-    forecast.tail(7).to_string(
-        index=False
+    daily_sales = prepare_sales_data(sales)
+
+    print("\nDaily sales data:")
+    print(daily_sales.head())
+
+
+    # Train model
+
+    model = train_sales_model(daily_sales)
+
+    print("\nSales forecasting model trained successfully!")
+
+
+    # Generate predictions
+
+    forecast = predict_sales(
+        model,
+        days=7
     )
-)
 
-# Save forecast
-save_forecast(
-    forecast,
-    "data/sales_forecast.csv"
-)
+    print("\nNEXT 7 DAYS SALES FORECAST")
 
-print("\nSales forecast saved successfully!")
+    print(
+        forecast.tail(7).to_string(
+            index=False
+        )
+    )
 
-print("\nCreating Actual vs Predicted Sales graph...")
 
-plot_actual_vs_predicted(
-    daily_sales,
-    forecast
-)
+    # Save forecast
 
-print("Sales visualization completed!")
+    save_forecast(
+        forecast,
+        "data/sales_forecast.csv"
+    )
+
+    print("\nSales forecast saved successfully!")
+
+
+    # Create graph
+
+    print("\nCreating Actual vs Predicted Sales graph...")
+
+    plot_actual_vs_predicted(
+        daily_sales,
+        forecast
+    )
+
+    print("Sales visualization completed!")
 
 
 if __name__ == "__main__":
