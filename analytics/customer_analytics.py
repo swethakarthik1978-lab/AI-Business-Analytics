@@ -7,7 +7,7 @@ def analyze_customers(customers, sales):
     customers = customers.copy()
     sales = sales.copy()
 
-    # Make sure dates are datetime
+    # Convert sale dates to datetime
     sales["SaleDate"] = pd.to_datetime(
         sales["SaleDate"]
     )
@@ -26,14 +26,14 @@ def analyze_customers(customers, sales):
         .reset_index()
     )
 
-    # Merge with customer information
+    # Combine sales information with customer information
     customer_analysis = customers.merge(
         customer_summary,
         on="CustomerID",
         how="left"
     )
 
-    # Customers with no purchases
+    # Fill values for customers with no purchases
     customer_analysis["TotalOrders"] = (
         customer_analysis["TotalOrders"]
         .fillna(0)

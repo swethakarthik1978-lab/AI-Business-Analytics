@@ -1,0 +1,101 @@
+CustomerID,CustomerName,Email,Phone,City,TotalOrders,TotalQuantity,TotalSpent,AverageOrderValue,FirstPurchase,LastPurchase
+1,Lisa Walker,davisjoseph@example.net,4462083642,Rhondachester,0.0,0.0,0.0,0.0,,
+2,Scott Harris,michealvalencia@example.net,7185588185,Taylorhaven,0.0,0.0,0.0,0.0,,
+3,Ashley Stuart,christyjackson@example.com,6604339598,Lake Alanfort,0.0,0.0,0.0,0.0,,
+4,Kimberly Werner,linda59@example.net,1206364729,Glassborough,2.0,7.0,246017.0,123008.5,2026-03-11,2026-06-15
+5,Sara Sanchez,clintontorres@example.net,7804546965,Port Derekbury,1.0,1.0,72707.0,72707.0,2026-01-13,2026-01-13
+6,Douglas Hopkins,zruiz@example.com,766067115,New Jacobfurt,2.0,7.0,470769.0,235384.5,2026-04-26,2026-04-26
+7,Robin Williams,esolomon@example.org,5274355262,West Jacqueline,1.0,5.0,222110.0,222110.0,2026-07-08,2026-07-08
+8,Teresa White,garyjones@example.org,6658794733,Deanburgh,1.0,4.0,177688.0,177688.0,2026-05-26,2026-05-26
+9,Mark Brown,david92@example.org,7703703744,Jenniferborough,0.0,0.0,0.0,0.0,,
+10,Nicole Gomez,wendyvaldez@example.com,5307196705,Andersenland,1.0,4.0,14252.0,14252.0,2026-02-25,2026-02-25
+11,Robert Paul,lewismargaret@example.org,227843918,West Richard,1.0,3.0,182697.0,182697.0,2026-02-17,2026-02-17
+12,Norman Anderson,jessica27@example.org,993925753,Diazview,1.0,2.0,85876.0,85876.0,2026-06-15,2026-06-15
+13,Brian Rice,michelle81@example.com,4708203304,South Barbaraport,0.0,0.0,0.0,0.0,,
+14,Steven Russo,gina93@example.net,9539633508,Ericborough,3.0,10.0,634566.0,211522.0,2026-04-16,2026-07-22
+15,Lisa Gilbert,bonnieguzman@example.com,9649476646,East Kimberly,2.0,5.0,225187.0,112593.5,2026-03-15,2026-04-21
+16,Aaron Cline,abbottsteven@example.net,1425284137,Justintown,1.0,4.0,212228.0,212228.0,2026-08-05,2026-08-05
+17,Mrs. Nicole Hernandez,mario12@example.org,5352383262,Tinaside,0.0,0.0,0.0,0.0,,
+18,Sean Johnson,rossmichael@example.net,8835133557,Port Rogerport,2.0,8.0,397138.0,198569.0,2026-07-12,2026-08-15
+19,Julie Villegas,kwatson@example.com,3922588117,New Michellemouth,2.0,9.0,291939.0,145969.5,2026-03-03,2026-05-03
+20,Brittany Banks,gentrylindsey@example.org,2536469885,West Candacefort,3.0,12.0,796020.0,265340.0,2026-02-13,2026-07-26
+21,Andrew Mills,jessica51@example.org,3739697429,Robertside,1.0,5.0,92060.0,92060.0,2026-03-03,2026-03-03
+22,Eric Young,bruce59@example.net,5425306820,South Darrell,0.0,0.0,0.0,0.0,,
+23,Wayne Short,nguyenpatricia@example.net,6923480327,Sanchezmouth,1.0,2.0,118880.0,118880.0,2026-05-10,2026-05-10
+24,Paul Simpson,evelyncurtis@example.org,6013002784,East Dillonport,1.0,4.0,273896.0,273896.0,2026-02-06,2026-02-06
+25,Barbara Kline,vberry@example.com,1141135886,Lake Brenda,1.0,1.0,41604.0,41604.0,2026-03-04,2026-03-04
+26,John Gibson,eduardo89@example.net,5071479137,North Jesse,1.0,1.0,56973.0,56973.0,2026-06-28,2026-06-28
+27,Frank Howell,mary22@example.org,5393210655,North Aliciamouth,0.0,0.0,0.0,0.0,,
+28,Lori Castro,amandagraham@example.net,282658246,Buchananmouth,1.0,5.0,39175.0,39175.0,2026-03-21,2026-03-21
+29,Nicole Reynolds,georgeaguirre@example.net,2520504481,New Adammouth,1.0,4.0,14252.0,14252.0,2026-03-26,2026-03-26
+30,Jorge Johnson,bowmanleonard@example.com,8809125830,North Tracy,0.0,0.0,0.0,0.0,,
+31,Blake Hampton,alexis20@example.org,106021514,Washingtonberg,0.0,0.0,0.0,0.0,,
+32,Michael Wilson,qlewis@example.org,3886602526,Port Christopher,2.0,8.0,287780.0,143890.0,2026-02-19,2026-04-10
+33,Tommy Adams,jmoore@example.org,4519730019,Smithshire,0.0,0.0,0.0,0.0,,
+34,Amanda George MD,xdavis@example.com,5665804086,Michaelborough,2.0,5.0,348498.0,174249.0,2026-02-18,2026-07-17
+35,Michael Hopkins,hansonashley@example.com,7283950555,East Matthewchester,0.0,0.0,0.0,0.0,,
+36,Emily Peters,schmidtjason@example.net,2680357516,West Christopherton,1.0,1.0,8084.0,8084.0,2026-06-19,2026-06-19
+37,Victor Martinez,melvinstafford@example.net,45617069,New Jamesbury,2.0,6.0,275553.0,137776.5,2026-01-23,2026-03-16
+38,Megan Doyle MD,williamssteven@example.net,5249647381,North Ryan,0.0,0.0,0.0,0.0,,
+39,Sandra Johnson,henryrodriguez@example.net,440130342,East Katie,0.0,0.0,0.0,0.0,,
+40,Sarah Mayer DDS,mariahlopez@example.net,7200643303,Port Terrymouth,0.0,0.0,0.0,0.0,,
+41,Lisa Hickman,jesse72@example.org,5654594569,West Timothyland,1.0,4.0,212228.0,212228.0,2026-07-26,2026-07-26
+42,Michelle Collins,talvarez@example.net,8218214805,East David,0.0,0.0,0.0,0.0,,
+43,Donald Fritz,ywright@example.org,6289978201,Lake Bonnie,2.0,9.0,601853.0,300926.5,2026-01-16,2026-06-09
+44,Angela Barton,tmercado@example.org,8100863022,Matthewburgh,0.0,0.0,0.0,0.0,,
+45,Dr. Scott Phillips,amberyoung@example.net,4679582032,Royside,2.0,3.0,82161.0,41080.5,2026-03-23,2026-04-11
+46,Jacob White,christina31@example.com,912913779,Whitemouth,0.0,0.0,0.0,0.0,,
+47,Beth Gonzalez,jennifercruz@example.com,6052406690,Gallegoston,2.0,7.0,322125.0,161062.5,2026-05-24,2026-06-12
+48,Kyle Wright,williamsonkaylee@example.org,8409744562,New Andrew,1.0,1.0,59440.0,59440.0,2026-08-19,2026-08-19
+49,Adam Schroeder,jamiebryant@example.net,7115486275,Lake Savannahfurt,0.0,0.0,0.0,0.0,,
+50,Ronald Drake,gloriaanderson@example.org,2827717463,Port Michael,1.0,1.0,61373.0,61373.0,2026-07-14,2026-07-14
+51,Brandon Robinson,eparker@example.org,894985915,Gutierrezside,3.0,10.0,288185.0,96061.66666666667,2026-03-03,2026-03-19
+52,Melissa Peck,wharmon@example.com,6020597033,South Stephanieburgh,3.0,9.0,501116.0,167038.66666666666,2026-01-04,2026-07-15
+53,Patricia Brown,christophermurphy@example.com,8036429830,North Daniel,2.0,3.0,188981.0,94490.5,2026-03-22,2026-07-05
+54,Joel Gordon,joy67@example.org,643056817,Meganport,1.0,4.0,273896.0,273896.0,2026-02-07,2026-02-07
+55,Brian Johnson,hartjennifer@example.org,7367648714,West Matthew,1.0,5.0,330955.0,330955.0,2026-05-12,2026-05-12
+56,Dylan Henry,dave63@example.com,5532001135,Robertfort,1.0,3.0,128814.0,128814.0,2026-08-27,2026-08-27
+57,Michael Moore,davidmoreno@example.net,9461501584,Sandersfort,0.0,0.0,0.0,0.0,,
+58,Jennifer Reynolds,rayelizabeth@example.org,8731371568,Perryville,0.0,0.0,0.0,0.0,,
+59,Lynn Olson,barbara30@example.com,8746558110,Francoborough,2.0,5.0,25004.0,12502.0,2026-07-22,2026-08-18
+60,Rachel Wilson,simpsonjimmy@example.org,4920413639,East Michaelatown,1.0,4.0,230588.0,230588.0,2026-05-28,2026-05-28
+61,April Peters,millerelijah@example.net,1172215658,Lake Nicoleview,0.0,0.0,0.0,0.0,,
+62,Jared Woods,paynekimberly@example.com,504967451,Sheaport,2.0,4.0,253922.0,126961.0,2026-03-23,2026-03-24
+63,Kyle Ross,reyeskelly@example.com,5766231412,Kathyfurt,0.0,0.0,0.0,0.0,,
+64,Paul Byrd,brownscott@example.net,3590668562,New Morganhaven,1.0,4.0,63620.0,63620.0,2026-08-24,2026-08-24
+65,Kaitlyn Roberts,shernandez@example.com,8278220668,Mariahaven,0.0,0.0,0.0,0.0,,
+66,George Kemp,matthewspamela@example.com,377259108,Josephfort,4.0,8.0,283779.0,70944.75,2026-06-13,2026-08-10
+67,Ann Gray,jennifer79@example.net,1484443235,Jacobside,1.0,2.0,26778.0,26778.0,2026-03-07,2026-03-07
+68,Howard Jackson DDS,rolson@example.com,9728256657,West Angela,0.0,0.0,0.0,0.0,,
+69,Michele Carlson,alexis90@example.com,2564177102,New Teresa,0.0,0.0,0.0,0.0,,
+70,Chris Perry,vickiowens@example.org,2841254011,Brewerfort,0.0,0.0,0.0,0.0,,
+71,Jeffrey Williams,joshua26@example.com,1979972775,Port Jenniferbury,2.0,9.0,358403.0,179201.5,2026-06-16,2026-07-22
+72,Alexander Klein,richardrice@example.com,6969168846,West Jeffrey,2.0,4.0,213252.0,106626.0,2026-01-09,2026-07-11
+73,Alejandro Gay,davidbrown@example.net,1043506522,Schwartzberg,0.0,0.0,0.0,0.0,,
+74,Jonathan Reese,jonathandavenport@example.net,6681545122,Carterberg,2.0,6.0,109735.0,54867.5,2026-02-11,2026-07-17
+75,Aaron Mckenzie,gregorylori@example.org,1991461862,Cynthialand,1.0,2.0,156412.0,156412.0,2026-06-27,2026-06-27
+76,Richard Fox,paynelauren@example.org,4063559984,Collinsmouth,0.0,0.0,0.0,0.0,,
+77,Tammy Wright,ramosjason@example.com,3136997211,Clineborough,1.0,2.0,49848.0,49848.0,2026-04-16,2026-04-16
+78,Brandi Gardner,holdenjoel@example.com,1658054233,Millerfort,0.0,0.0,0.0,0.0,,
+79,Gary Hamilton,hoffmanpatrick@example.com,4054128985,Elizabethburgh,0.0,0.0,0.0,0.0,,
+80,Vanessa Schultz,daniel99@example.com,5513464073,Elizabethbury,1.0,2.0,20228.0,20228.0,2026-01-05,2026-01-05
+81,Susan Mason,gtownsend@example.com,1615784989,Marytown,0.0,0.0,0.0,0.0,,
+82,Joseph Thomas,pottsjose@example.com,653072749,New Kimberlyland,0.0,0.0,0.0,0.0,,
+83,Mark Jones,allenanthony@example.com,5941232030,West Christymouth,1.0,2.0,75758.0,75758.0,2026-07-18,2026-07-18
+84,Mary King,michellegarcia@example.org,7394007414,West Christophermouth,1.0,5.0,199575.0,199575.0,2026-07-28,2026-07-28
+85,Mark Smith,karen23@example.com,1297760378,South Ralph,2.0,9.0,361580.0,180790.0,2026-07-08,2026-08-18
+86,Joseph Jackson,chelseastewart@example.org,5131170392,East Stephanie,0.0,0.0,0.0,0.0,,
+87,Anthony Taylor,zachary64@example.org,2669208192,South Kennethberg,2.0,6.0,111127.0,55563.5,2026-01-04,2026-02-07
+88,Charles Ramirez,qryan@example.org,336261091,Waltersland,1.0,4.0,227892.0,227892.0,2026-05-08,2026-05-08
+89,Christopher Lyons,gloveranthony@example.org,1090417386,New Claudia,1.0,3.0,101274.0,101274.0,2026-06-02,2026-06-02
+90,Scott Owen,tclark@example.net,5994821743,Amymouth,1.0,5.0,351750.0,351750.0,2026-03-18,2026-03-18
+91,Patricia Bradley,matthew11@example.com,6473596404,New Kurtport,3.0,7.0,165667.0,55222.333333333336,2026-06-11,2026-08-18
+92,Aaron Fowler,smithvictoria@example.com,3515390319,Donnaland,1.0,5.0,376435.0,376435.0,2026-05-06,2026-05-06
+93,Darrell Atkins,gutierreztraci@example.org,4008947022,Ortizburgh,0.0,0.0,0.0,0.0,,
+94,Amanda Lam,sanchezchelsea@example.org,6344286618,Philipbury,1.0,4.0,258588.0,258588.0,2026-01-17,2026-01-17
+95,John Hammond,danielle37@example.org,8430255480,Nolanton,0.0,0.0,0.0,0.0,,
+96,Joshua Hansen,blamb@example.org,5993167721,East Scott,1.0,1.0,12604.0,12604.0,2026-06-24,2026-06-24
+97,Shannon Roth,zreed@example.com,5579080542,North Thomas,1.0,5.0,292170.0,292170.0,2026-01-22,2026-01-22
+98,Mike Brown,kimberlylowe@example.net,3051316502,Andersonmouth,0.0,0.0,0.0,0.0,,
+99,Elizabeth Cohen DDS,torressamantha@example.com,5808238126,Donnamouth,3.0,10.0,567647.0,189215.66666666666,2026-03-28,2026-07-12
+100,Jennifer Butler,cheryl01@example.net,2318060715,Rickyland,4.0,11.0,468788.0,117197.0,2026-01-27,2026-07-21

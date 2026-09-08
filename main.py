@@ -1,11 +1,16 @@
 from config import PROJECT_NAME, VERSION
+
 from database.database import engine, Base, SessionLocal
 from database.models import Product, Customer, Order, Inventory, Finance
 from database.crud import *
 
 from data_collection import load_data
+
 from preprocessing.clean_data import clean_dataframe
 from preprocessing.feature_engineering import create_features
+
+from analytics.customer_analytics import analyze_customers
+from analytics.inventory_analytics import analyze_inventory
 
 from ML.sales_forecasting import (
     prepare_sales_data,
@@ -14,9 +19,13 @@ from ML.sales_forecasting import (
     save_forecast,
     plot_actual_vs_predicted
 )
-from analytics.customer_analytics import analyze_customers
+
 
 def main():
+
+    # ==================================================
+    # PROJECT INFORMATION
+    # ==================================================
 
     print("=" * 50)
     print(PROJECT_NAME)
@@ -25,11 +34,12 @@ def main():
 
     print("Welcome to the AI Business Analytics Platform")
 
-    # -----------------------------------
-    # LOAD DATA
-    # -----------------------------------
 
-    print("\nLOADING DATA")
+    # ==================================================
+    # LOAD DATA
+    # ==================================================
+
+    print("LOADING DATA")
 
     datasets = load_data()
 
@@ -37,11 +47,11 @@ def main():
         print(name, df.shape)
 
 
-    # -----------------------------------
+    # ==================================================
     # CLEAN DATA
-    # -----------------------------------
+    # ==================================================
 
-    print("\nCLEANING DATA")
+    print("CLEANING DATA")
 
     clean_datasets = {}
 
@@ -52,11 +62,11 @@ def main():
         clean_datasets[name] = clean_dataframe(df)
 
 
-    # -----------------------------------
+    # ==================================================
     # FEATURE ENGINEERING
-    # -----------------------------------
+    # ==================================================
 
-    print("\nFEATURE ENGINEERING")
+    print("FEATURE ENGINEERING")
 
     for name, df in clean_datasets.items():
 
@@ -64,7 +74,7 @@ def main():
 
         clean_datasets[name] = feature_df
 
-        # Save updated data back to CSV
+        # Save feature-engineered data back to CSV
         feature_df.to_csv(
             f"data/{name}.csv",
             index=False
@@ -73,9 +83,44 @@ def main():
         print(name, "updated successfully")
 
 
-    # -----------------------------------
+    # ==================================================
+    # CUSTOMER ANALYTICS
+    # ==================================================
+
+    print("=" * 50)
+    print("CUSTOMER ANALYTICS")
+    print("=" * 50)
+
+    customer_analysis = analyze_customers(
+        clean_datasets["customers"],
+        clean_datasets["sales"]
+    )
+
+    print(customer_analysis.head())
+
+    # Save customer analytics
+    customer_analysis.to_csv(
+        "data/customer_analysis.csv",
+        index=False
+    )
+
+    print("Customer analytics saved successfully!")
+
+    # ================================================= 
+    # INVENTORY ANALYTICS
+    # =================================================
+    inventory = clean_datasets["inventory"] 
+    products = clean_datasets["products"] 
+
+    inventory_analysis = analyze_inventory(inventory,products) 
+    print("inventory Analysis:")
+    print(inventory_analysis.head())
+
+    inventory_analysis.to_csv("data/inventory_analysis.csv",index=False)
+
+    # ==================================================
     # BUSINESS SUMMARY
-    # -----------------------------------
+    # ==================================================
 
     sales = clean_datasets["sales"]
 
@@ -92,9 +137,9 @@ def main():
     print("Units Sold:", int(units_sold))
 
 
-    # -----------------------------------
+    # ==================================================
     # DATABASE
-    # -----------------------------------
+    # ==================================================
 
     Base.metadata.create_all(bind=engine)
 
@@ -132,31 +177,25 @@ def main():
     print("Database updated successfully!")
 
 
-    # -----------------------------------
+    # ==================================================
     # SALES FORECASTING
-    # -----------------------------------
+    # ==================================================
 
-    print("\n" + "=" * 50)
+    print("=" * 50)
     print("SALES FORECASTING")
     print("=" * 50)
-
-    sales = clean_datasets["sales"]
 
     daily_sales = prepare_sales_data(sales)
 
     print("\nDaily sales data:")
     print(daily_sales.head())
 
-
-    # Train model
-
+    # Train forecasting model
     model = train_sales_model(daily_sales)
 
     print("\nSales forecasting model trained successfully!")
 
-
-    # Generate predictions
-
+    # Predict next 7 days
     forecast = predict_sales(
         model,
         days=7
@@ -170,9 +209,7 @@ def main():
         )
     )
 
-
     # Save forecast
-
     save_forecast(
         forecast,
         "data/sales_forecast.csv"
@@ -180,10 +217,10 @@ def main():
 
     print("\nSales forecast saved successfully!")
 
-
     # Create graph
-
-    print("\nCreating Actual vs Predicted Sales graph...")
+    print(
+        "\nCreating Actual vs Predicted Sales graph..."
+    )
 
     plot_actual_vs_predicted(
         daily_sales,
