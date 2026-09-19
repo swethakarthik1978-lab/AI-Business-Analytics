@@ -1,0 +1,60 @@
+ProductID,UnitsSold,ProductName,Category
+41,15.0,Jeans,Electronics
+84,13.0,Sofa,Clothing
+31,11.0,T-Shirt,Electronics
+99,10.0,Laptop,Clothing
+56,10.0,Monitor,Home Appliances
+87,10.0,Tablet,Home Appliances
+13,9.0,Monitor,Books
+20,9.0,Jeans,Books
+67,9.0,Monitor,Home Appliances
+97,8.0,Table,Clothing
+53,8.0,Speaker,Electronics
+59,8.0,Jacket,Home Appliances
+3,7.0,Jeans,Electronics
+45,7.0,Book,Electronics
+72,7.0,Table,Books
+21,7.0,Printer,Electronics
+6,7.0,Table,Home Appliances
+74,6.0,Mouse,Home Appliances
+75,6.0,Monitor,Furniture
+38,6.0,Table,Books
+47,6.0,Book,Clothing
+64,5.0,Jeans,Clothing
+63,5.0,Keyboard,Electronics
+60,5.0,Printer,Furniture
+92,5.0,Mouse,Books
+94,5.0,Laptop,Books
+49,5.0,Chair,Books
+4,5.0,Speaker,Home Appliances
+46,5.0,Monitor,Clothing
+100,5.0,Table,Furniture
+27,5.0,Laptop,Clothing
+37,5.0,Laptop,Furniture
+16,5.0,Monitor,Books
+26,5.0,Printer,Clothing
+12,4.0,Sofa,Clothing
+80,4.0,Mouse,Furniture
+73,4.0,Jeans,Electronics
+23,4.0,Camera,Home Appliances
+61,4.0,T-Shirt,Home Appliances
+30,4.0,Jeans,Clothing
+33,4.0,Keyboard,Home Appliances
+91,4.0,Sofa,Home Appliances
+69,3.0,Table,Electronics
+70,3.0,Mouse,Clothing
+10,3.0,Speaker,Books
+95,3.0,Chair,Home Appliances
+34,3.0,Monitor,Home Appliances
+5,3.0,Jeans,Books
+14,2.0,Chair,Books
+44,2.0,Laptop,Clothing
+86,2.0,Monitor,Clothing
+81,2.0,Camera,Furniture
+43,2.0,Jeans,Electronics
+22,2.0,T-Shirt,Furniture
+90,1.0,Camera,Home Appliances
+15,1.0,Jeans,Books
+11,1.0,Book,Furniture
+35,1.0,Jacket,Furniture
+17,1.0,Book,Clothing

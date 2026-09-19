@@ -1,0 +1,101 @@
+InventoryID,ProductID,CurrentStock,ReorderLevel,StockStatus,ProductName,Category,Price,Stock,InventoryValue
+1,1,232,29,High Stock,Table,Books,36530,26,8474960
+2,2,263,13,High Stock,Keyboard,Books,57842,55,15212446
+3,3,109,8,High Stock,Jeans,Electronics,79247,68,8637923
+4,4,181,14,High Stock,Speaker,Home Appliances,12604,146,2281324
+5,5,258,12,High Stock,Jeans,Books,57920,112,14943360
+6,6,131,50,High Stock,Table,Home Appliances,10114,133,1324934
+7,7,74,9,High Stock,Jeans,Books,45927,165,3398598
+8,8,77,48,High Stock,Speaker,Clothing,29453,184,2267881
+9,9,30,48,Medium Stock,Jacket,Books,19196,90,575880
+10,10,49,35,Medium Stock,Speaker,Books,60899,138,2984051
+11,11,269,30,High Stock,Book,Furniture,61373,66,16509337
+12,12,117,13,High Stock,Sofa,Clothing,48897,7,5720949
+13,13,90,28,High Stock,Monitor,Books,27523,194,2477070
+14,14,185,44,High Stock,Chair,Books,37879,172,7007615
+15,15,147,42,High Stock,Jeans,Books,8084,34,1188348
+16,16,16,28,Medium Stock,Monitor,Books,58614,53,937824
+17,17,105,34,High Stock,Book,Clothing,41604,108,4368420
+18,18,21,22,Medium Stock,Sofa,Furniture,60410,12,1268610
+19,19,117,34,High Stock,Speaker,Furniture,43950,74,5142150
+20,20,240,5,High Stock,Jeans,Books,48500,132,11640000
+21,21,117,35,High Stock,Printer,Electronics,51546,20,6030882
+22,22,131,31,High Stock,T-Shirt,Furniture,24924,147,3265044
+23,23,75,43,High Stock,Camera,Home Appliances,69207,152,5190525
+24,24,275,35,High Stock,Keyboard,Furniture,6162,129,1694550
+25,25,262,23,High Stock,Keyboard,Electronics,33972,137,8900664
+26,26,137,7,High Stock,Printer,Clothing,42938,95,5882506
+27,27,74,20,High Stock,Laptop,Clothing,19563,90,1447662
+28,28,270,19,High Stock,Tablet,Electronics,71713,42,19362510
+29,29,187,43,High Stock,Mouse,Electronics,29825,98,5577275
+30,30,187,33,High Stock,Jeans,Clothing,57647,184,10779989
+31,31,259,16,High Stock,T-Shirt,Electronics,3563,196,922817
+32,32,152,45,High Stock,Book,Clothing,10128,116,1539456
+33,33,255,16,High Stock,Keyboard,Home Appliances,79758,114,20338290
+34,34,101,44,High Stock,Monitor,Home Appliances,58081,176,5866181
+35,35,299,46,High Stock,Jacket,Furniture,67459,198,20170241
+36,36,140,45,High Stock,Monitor,Furniture,14917,40,2088380
+37,37,171,21,High Stock,Laptop,Furniture,55197,107,9438687
+38,38,11,11,Medium Stock,Table,Books,74101,121,815111
+39,39,149,33,High Stock,Jacket,Furniture,8432,67,1256368
+40,40,10,25,Low Stock,Chair,Books,37090,105,370900
+41,41,183,6,High Stock,Jeans,Electronics,68474,138,12530742
+42,42,290,36,High Stock,Tablet,Clothing,60096,173,17427840
+43,43,205,50,High Stock,Jeans,Electronics,8295,65,1700475
+44,44,204,46,High Stock,Laptop,Clothing,75321,195,15365484
+45,45,281,14,High Stock,Book,Electronics,59440,186,16702640
+46,46,128,13,High Stock,Monitor,Clothing,66191,16,8472448
+47,47,209,30,High Stock,Book,Clothing,13389,189,2798301
+48,48,21,15,Medium Stock,Sofa,Furniture,34932,197,733572
+49,49,298,26,High Stock,Chair,Books,60180,89,17933640
+50,50,222,37,High Stock,Monitor,Clothing,19287,139,4281714
+51,51,256,13,High Stock,Camera,Home Appliances,25283,65,6472448
+52,52,201,43,High Stock,Camera,Books,79264,107,15932064
+53,53,280,45,High Stock,Speaker,Electronics,68237,60,19106360
+54,54,66,21,High Stock,T-Shirt,Home Appliances,73732,166,4866312
+55,55,249,31,High Stock,Sofa,Clothing,78877,26,19640373
+56,56,274,7,High Stock,Monitor,Home Appliances,56973,64,15610602
+57,57,71,29,High Stock,Table,Furniture,56775,198,4031025
+58,58,268,7,High Stock,Printer,Furniture,64101,113,17179068
+59,59,257,38,High Stock,Jacket,Home Appliances,53057,147,13635649
+60,60,232,15,High Stock,Printer,Furniture,39915,46,9260280
+61,61,298,31,High Stock,T-Shirt,Home Appliances,5215,133,1554070
+62,62,294,8,High Stock,Table,Books,1999,12,587706
+63,63,211,49,High Stock,Keyboard,Electronics,8578,139,1809958
+64,64,274,31,High Stock,Jeans,Clothing,39890,20,10929860
+65,65,213,31,High Stock,Jeans,Furniture,45697,59,9733461
+66,66,206,14,High Stock,Book,Electronics,49255,174,10146530
+67,67,28,33,Medium Stock,Monitor,Home Appliances,64647,101,1810116
+68,68,116,9,High Stock,Monitor,Electronics,44439,78,5154924
+69,69,47,9,Medium Stock,Table,Electronics,73068,29,3434196
+70,70,141,48,High Stock,Mouse,Clothing,33758,88,4759878
+71,71,167,32,High Stock,Keyboard,Electronics,41850,67,6988950
+72,72,61,40,High Stock,Table,Books,18412,115,1123132
+73,73,206,47,High Stock,Jeans,Electronics,3100,66,638600
+74,74,143,47,High Stock,Mouse,Home Appliances,75287,126,10766041
+75,75,115,18,High Stock,Monitor,Furniture,7351,63,845365
+76,76,171,7,High Stock,Laptop,Home Appliances,43656,154,7465176
+77,77,113,5,High Stock,Jacket,Books,859,74,97067
+78,78,121,9,High Stock,Camera,Electronics,50231,139,6077951
+79,79,84,12,High Stock,Jeans,Home Appliances,23199,161,1948716
+80,80,237,27,High Stock,Mouse,Furniture,15170,166,3595290
+81,81,45,42,Medium Stock,Camera,Furniture,78206,116,3519270
+82,82,291,34,High Stock,Mouse,Furniture,14023,50,4080693
+83,83,180,47,High Stock,Mouse,Clothing,35625,88,6412500
+84,84,200,39,High Stock,Sofa,Clothing,44422,83,8884400
+85,85,167,31,High Stock,T-Shirt,Books,18665,170,3117055
+86,86,43,34,Medium Stock,Monitor,Clothing,44170,58,1899310
+87,87,227,32,High Stock,Tablet,Home Appliances,70350,92,15969450
+88,88,118,37,High Stock,Tablet,Electronics,47641,45,5621638
+89,89,289,48,High Stock,Speaker,Books,14887,137,4302343
+90,90,83,6,High Stock,Camera,Home Appliances,72707,97,6034681
+91,91,56,30,High Stock,Sofa,Home Appliances,15905,120,890680
+92,92,70,35,High Stock,Mouse,Books,7877,129,551390
+93,93,256,39,High Stock,Sofa,Clothing,78935,135,20207360
+94,94,116,41,High Stock,Laptop,Books,58434,55,6778344
+95,95,222,40,High Stock,Chair,Home Appliances,73675,181,16355850
+96,96,50,25,Medium Stock,Jacket,Home Appliances,42429,116,2121450
+97,97,276,8,High Stock,Table,Clothing,48469,43,13377444
+98,98,56,44,High Stock,Mouse,Electronics,51387,171,2877672
+99,99,167,9,High Stock,Laptop,Clothing,52507,105,8768669
+100,100,260,38,High Stock,Table,Furniture,7835,40,2037100
