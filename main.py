@@ -13,6 +13,7 @@ from preprocessing.feature_engineering import create_features
 from analytics.customer_analytics import analyze_customers
 from analytics.inventory_analytics import analyze_inventory
 from analytics.sales_analytics import analyze_sales
+from analytics.financial_analytics import analyze_financial
 
 from ML.sales_forecasting import (
     prepare_sales_data,
@@ -41,7 +42,7 @@ def main():
     # LOAD DATA
     # ==================================================
 
-    print("LOADING DATA")
+    print("\nLOADING DATA")
 
     datasets = load_data()
 
@@ -53,7 +54,7 @@ def main():
     # CLEAN DATA
     # ==================================================
 
-    print("CLEANING DATA")
+    print("\nCLEANING DATA")
 
     clean_datasets = {}
 
@@ -68,7 +69,7 @@ def main():
     # FEATURE ENGINEERING
     # ==================================================
 
-    print("FEATURE ENGINEERING")
+    print("\nFEATURE ENGINEERING")
 
     for name, df in clean_datasets.items():
 
@@ -89,7 +90,7 @@ def main():
     # CUSTOMER ANALYTICS
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("CUSTOMER ANALYTICS")
     print("=" * 50)
 
@@ -113,7 +114,7 @@ def main():
     # INVENTORY ANALYTICS
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("INVENTORY ANALYTICS")
     print("=" * 50)
 
@@ -137,10 +138,44 @@ def main():
 
 
     # ==================================================
+    # FINANCIAL ANALYTICS
+    # ==================================================
+
+    print("\n" + "=" * 50)
+    print("FINANCIAL ANALYTICS")
+    print("=" * 50)
+
+    # Retrieve cleaned financial and sales datasets
+    finance = clean_datasets["finance"]
+    sales = clean_datasets["sales"]
+
+    # Perform financial analysis
+    financial_analysis = analyze_financial(
+        finance,
+        sales
+    )
+
+    # Display financial summary
+    print("\nFinancial Summary:")
+
+    print(
+        financial_analysis["financial_summary"]
+    )
+
+    # Save financial summary to CSV
+    financial_analysis["financial_summary"].to_csv(
+        "data/financial_summary.csv",
+        index=False
+    )
+
+    print("\nFinancial analytics saved successfully!")
+
+
+    # ==================================================
     # SALES ANALYTICS
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("SALES ANALYTICS")
     print("=" * 50)
 
@@ -162,6 +197,7 @@ def main():
     )
 
     print("\nBest Selling Products:")
+
     print(
         sales_analysis["best_selling_products"].head(10)
     )
@@ -178,7 +214,7 @@ def main():
     # CUSTOMER SPENDING
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("CUSTOMER SPENDING")
     print("=" * 50)
 
@@ -231,7 +267,7 @@ def main():
     # PRODUCT WISE REVENUE
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("PRODUCT WISE REVENUE")
     print("=" * 50)
 
@@ -276,7 +312,7 @@ def main():
     # CATEGORY WISE SALES
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("CATEGORY WISE SALES")
     print("=" * 50)
 
@@ -303,7 +339,7 @@ def main():
 
     # Save category sales
     category_sales.to_csv(
-        "data/category_Sales.csv",
+        "data/category_sales.csv",
         index=False
     )
 
@@ -314,7 +350,7 @@ def main():
     # BUSINESS SUMMARY
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("BUSINESS SUMMARY")
     print("=" * 50)
 
@@ -330,6 +366,10 @@ def main():
     # ==================================================
     # DATABASE
     # ==================================================
+
+    print("\n" + "=" * 50)
+    print("DATABASE")
+    print("=" * 50)
 
     Base.metadata.create_all(bind=engine)
 
@@ -374,7 +414,7 @@ def main():
     # SALES FORECASTING
     # ==================================================
 
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("SALES FORECASTING")
     print("=" * 50)
 
