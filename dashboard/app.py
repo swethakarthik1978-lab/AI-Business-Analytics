@@ -15,8 +15,9 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 AI BUSINESS ANALYTICS DASHBOARD")
-st.write("Sales, Customer, Product and Financial Analytics")
+# ===================================================
+# DATA DIRECTORY
+# ===================================================
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -54,83 +55,114 @@ if "TotalSales" not in sales.columns:
     st.error("TotalSales column is missing. Run main.py.")
     st.stop()
 
+# ============================================================
+# PAGE HEADER
+# ============================================================
+
+st.title("📊 AI Business Analytics Dashboard")
+
+st.write(
+    "Sales, Customer, Product, Inventory and Financial Analytics"
+)
+
+st.divider()
 
 # ==================================================
 # SIDEBAR
 # ==================================================
 
-st.sidebar.header("Dashboard Controls")
+st.sidebar.title("🎛 Dashboard Controls")
 
-if st.sidebar.button("Refresh Data"):
-    st.cache_data.clear()
-    st.rerun()
+st.sidebar.subheader("Filters")
 
-top_n = st.sidebar.slider(
-    "Number of top products",
-    min_value=5,
-    max_value=20,
-    value=10
+# Category filter
+categories = ["All"] + sorted(
+    products["Category"].dropna().unique().tolist()
 )
 
+selected_category = st.sidebar.selectbox(
+    "Select Category",
+    categories
+)
 
-# ==================================================
+# Apply category filter
+if selected_category != "All":
+
+    filtered_products = products[
+        products["Category"] == selected_category
+    ]
+
+    filtered_sales = sales[
+        sales["ProductID"].isin(filtered_products["ProductID"])
+    ]
+
+else:
+
+    filtered_products = products.copy()
+    filtered_sales = sales.copy()
+
+
+st.sidebar.divider()
+
+st.sidebar.subheader("Dashboard Sections")
+
+st.sidebar.write("📌 Business Overview")
+st.sidebar.write("📈 Sales Performance")
+st.sidebar.write("📦 Product Performance")
+st.sidebar.write("🔮 Sales Forecast")
+st.sidebar.write("📋 Detailed Data")
+
+# ============================================================
+# KPI CALCULATIONS
+# ============================================================
+
+total_revenue = filtered_sales["TotalAmount"].sum()
+
+total_orders = filtered_sales["OrderID"].nunique()
+
+total_customers = filtered_sales["CustomerID"].nunique()
+
+total_quantity = filtered_sales["Quantity"].sum()
+
+# ============================================================
 # BUSINESS OVERVIEW
-# ==================================================
+# ============================================================
 
-st.header("1. Business Overview")
-
-total_revenue = sales["TotalSales"].sum()
-
-total_orders = (
-    sales["OrderID"].nunique()
-    if "OrderID" in sales.columns
-    else len(sales)
-)
-
-total_customers = sales["CustomerID"].nunique()
-
-total_quantity = sales["Quantity"].sum()
-
-total_profit = None
-
-if finance is not None:
-    if "Profit" in finance.columns:
-        total_profit = finance["Profit"].sum()
-    elif {"Revenue", "Expenses"}.issubset(finance.columns):
-        total_profit = (
-            finance["Revenue"].sum()
-            - finance["Expenses"].sum()
-        )
-
+st.subheader("📌 Business Overview")
 
 col1, col2, col3, col4 = st.columns(4)
 
-col1.metric(
-    "TOTAL REVENUE",
-    f"${total_revenue:,.2f}"
-)
+with col1:
 
-col2.metric(
-    "TOTAL PROFIT",
-    f"${total_profit:,.2f}"
-    if total_profit is not None
-    else "N/A"
-)
+    st.metric(
+        "💰 Total Revenue",
+        f"₹{total_revenue:,.0f}"
+    )
 
-col3.metric(
-    "TOTAL ORDERS" if "OrderID" in sales.columns
-    else "SALES RECORDS",
-    total_orders
-)
+with col2:
 
-col4.metric(
-    "TOTAL CUSTOMERS",
-    total_customers
-)
+    st.metric(
+        "🛒 Total Orders",
+        f"{total_orders:,}"
+    )
 
-st.metric("TOTAL UNITS SOLD", int(total_quantity))
+with col3:
+
+    st.metric(
+        "👥 Customers",
+        f"{total_customers:,}"
+    )
+
+with col4:
+
+    st.metric(
+        "📦 Items Sold",
+        f"{total_quantity:,}"
+    )
+
 
 st.divider()
+
 
 
 # ==================================================
