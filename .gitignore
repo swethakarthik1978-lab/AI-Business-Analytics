@@ -21,3 +21,6 @@ __pycache__/
 *.logecommerce.db
 
 ecommerce.db
+
+__pycache__/
+*.pyc

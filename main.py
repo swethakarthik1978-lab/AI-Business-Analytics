@@ -31,7 +31,8 @@ from ML.sales_forecasting import (
     save_forecast,
     plot_actual_vs_predicted
 )
-
+from chatbot.business_context import create_business_context
+from chatbot.chatbot import ask_business_chatbot
 
 # ==================================================
 # PROJECT PATHS
@@ -1228,8 +1229,47 @@ def run_dashboard():
         "AI Business Analytics Platform • "
         "Sales & Business Intelligence Dashboard"
     )
+    # ==================================================
+    # OPENAI 
+    # ==================================================
+    st.divider()
 
+st.subheader("🤖 AI Business Assistant")
 
+st.write(
+    "Ask questions about your business data."
+)
+
+question = st.chat_input(
+    "Ask a business question..."
+)
+
+if question:
+
+    st.chat_message(
+        "user"
+    ).write(question)
+
+    business_context = create_business_context(
+        sales,
+        products,
+        customers,
+        inventory,
+        finance
+    )
+
+    with st.spinner(
+        "Analyzing business data..."
+    ):
+
+        answer = ask_business_chatbot(
+            question,
+            business_context
+        )
+
+    st.chat_message(
+        "assistant"
+    ).write(answer)
 # ==================================================
 # DETECT HOW MAIN.PY IS BEING RUN
 # ==================================================
