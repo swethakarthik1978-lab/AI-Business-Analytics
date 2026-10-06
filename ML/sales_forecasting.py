@@ -1,106 +1,206 @@
-import pandas as pd
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
+import pandas as pd
+
 from prophet import Prophet
+
+
+# ==================================================
+# PREPARE SALES DATA
+# ==================================================
+
 def prepare_sales_data(df):
-    """
-    Convert transaction-level sales into daily sales.
-    """
 
-    df = df.copy()
+    data = df.copy()
 
-    df["SaleDate"] = pd.to_datetime(df["SaleDate"])
+    data["SaleDate"] = (
+        pd.to_datetime(
+            data["SaleDate"],
+            errors="coerce"
+        )
+    )
+
+    data = data.dropna(
+        subset=["SaleDate"]
+    )
 
     daily_sales = (
-        df.groupby("SaleDate")["TotalAmount"]
+        data
+        .groupby(
+            "SaleDate",
+            as_index=False
+        )["TotalSales"]
         .sum()
-        .reset_index()
+        .rename(
+            columns={
+                "SaleDate": "ds",
+                "TotalSales": "y"
+            }
+        )
+        .sort_values(
+            "ds"
+        )
     )
-
-    daily_sales = daily_sales.rename(
-        columns={
-            "SaleDate": "ds",
-            "TotalAmount": "y"
-        }
-    )
-
-    daily_sales = daily_sales.sort_values("ds")
 
     return daily_sales
 
-def train_sales_model(sales_data):
-    """
-    Train Prophet forecasting model.
-    """
+
+# ==================================================
+# TRAIN MODEL
+# ==================================================
+
+def train_sales_model(
+    sales_data
+):
 
     model = Prophet()
 
-    model.fit(sales_data)
-
-    return(model) 
-
-def predict_sales(model, days=7):
-    """
-    Predict future sales.
-    """
-
-    future = model.make_future_dataframe(
-        periods=days
+    model.fit(
+        sales_data
     )
 
-    forecast = model.predict(future)
+    return model
 
-    forecast = forecast[
-        [
-            "ds",
-            "yhat",
-            "yhat_lower",
-            "yhat_upper"
+
+# ==================================================
+# PREDICT SALES
+# ==================================================
+
+def predict_sales(
+    model,
+    days=7
+):
+
+    future = (
+        model
+        .make_future_dataframe(
+            periods=days,
+            freq="D"
+        )
+    )
+
+    forecast = (
+        model.predict(
+            future
+        )
+    )
+
+    forecast = (
+        forecast[
+            [
+                "ds",
+                "yhat",
+                "yhat_lower",
+                "yhat_upper"
+            ]
         ]
-    ]
+    )
 
     return forecast
 
-def save_forecast(forecast, filename):
-    """
-    Save forecast to CSV.
-    """
+
+# ==================================================
+# SAVE FORECAST
+# ==================================================
+
+def save_forecast(
+    forecast,
+    filepath=(
+        "data/sales_forecast.csv"
+    )
+):
+
+    filepath = Path(
+        filepath
+    )
+
+    filepath.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
 
     forecast.to_csv(
-        filename,
+        filepath,
         index=False
     )
-def plot_actual_vs_predicted(actual_data, forecast):
-    """
-    Plot actual sales against predicted sales.
-    """
 
-    plt.figure(figsize=(12, 6))
+    return filepath
 
-    # Actual sales
-    plt.plot(
-        actual_data["ds"],
-        actual_data["y"],
+
+# ==================================================
+# ACTUAL VS PREDICTED GRAPH
+# ==================================================
+
+def plot_actual_vs_predicted(
+    actual_sales,
+    forecast,
+    filepath=(
+        "data/actual_vs_predicted.png"
+    )
+):
+
+    filepath = Path(
+        filepath
+    )
+
+    filepath.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    fig, ax = plt.subplots(
+        figsize=(
+            11,
+            5
+        )
+    )
+
+    # Actual
+
+    ax.plot(
+        actual_sales["ds"],
+        actual_sales["y"],
         label="Actual Sales"
     )
 
-    # Predicted sales
-    plt.plot(
+    # Prediction
+
+    ax.plot(
         forecast["ds"],
         forecast["yhat"],
         label="Predicted Sales"
     )
 
-    plt.xlabel("Date")
-    plt.ylabel("Sales")
-
-    plt.title(
-        "Actual Sales vs Predicted Sales"
+    ax.set_title(
+        "Actual vs Predicted Sales"
     )
 
-    plt.legend()
+    ax.set_xlabel(
+        "Date"
+    )
 
-    plt.xticks(rotation=45)
+    ax.set_ylabel(
+        "Sales"
+    )
 
-    plt.tight_layout()
+    ax.legend()
 
-    plt.show()
+    fig.autofmt_xdate()
+
+    fig.tight_layout()
+
+    fig.savefig(
+        filepath,
+        dpi=150
+    )
+
+    plt.close(
+        fig
+    )
+
+    return filepath

@@ -1,57 +1,106 @@
 import pandas as pd
 
 
-def analyze_customers(customers, sales):
+def analyze_customers(
+    customers,
+    sales
+):
 
-    # Copy data
     customers = customers.copy()
     sales = sales.copy()
 
-    # Convert sale dates to datetime
-    sales["SaleDate"] = pd.to_datetime(
-        sales["SaleDate"]
-    )
+    # Convert date
 
-    # Group sales by customer
-    customer_summary = (
-        sales.groupby("CustomerID")
-        .agg(
-            TotalOrders=("SaleDate", "count"),
-            TotalQuantity=("Quantity", "sum"),
-            TotalSpent=("TotalAmount", "sum"),
-            AverageOrderValue=("TotalAmount", "mean"),
-            FirstPurchase=("SaleDate", "min"),
-            LastPurchase=("SaleDate", "max")
+    sales["SaleDate"] = (
+        pd.to_datetime(
+            sales["SaleDate"],
+            errors="coerce"
         )
-        .reset_index()
     )
 
-    # Combine sales information with customer information
-    customer_analysis = customers.merge(
+    # ==================================================
+    # CUSTOMER SUMMARY
+    # ==================================================
+
+    customer_summary = (
+        sales
+        .groupby(
+            "CustomerID",
+            as_index=False
+        )
+        .agg(
+            TotalOrders=(
+                "OrderID",
+                "nunique"
+            ),
+            TotalQuantity=(
+                "Quantity",
+                "sum"
+            ),
+            TotalSpent=(
+                "TotalSales",
+                "sum"
+            ),
+            FirstPurchase=(
+                "SaleDate",
+                "min"
+            ),
+            LastPurchase=(
+                "SaleDate",
+                "max"
+            )
+        )
+    )
+
+    # ==================================================
+    # MERGE CUSTOMER INFORMATION
+    # ==================================================
+
+    result = customers.merge(
         customer_summary,
         on="CustomerID",
         how="left"
     )
 
-    # Fill values for customers with no purchases
-    customer_analysis["TotalOrders"] = (
-        customer_analysis["TotalOrders"]
+    # Fill missing numerical values
+
+    columns_to_fill = [
+        "TotalOrders",
+        "TotalQuantity",
+        "TotalSpent"
+    ]
+
+    result[
+        columns_to_fill
+    ] = result[
+        columns_to_fill
+    ].fillna(0)
+
+    result[
+        "TotalOrders"
+    ] = result[
+        "TotalOrders"
+    ].astype(int)
+
+    # ==================================================
+    # AVERAGE ORDER VALUE
+    # ==================================================
+
+    result[
+        "AverageOrderValue"
+    ] = (
+        result[
+            "TotalSpent"
+        ]
+        .div(
+            result[
+                "TotalOrders"
+            ].replace(
+                0,
+                pd.NA
+            )
+        )
         .fillna(0)
     )
 
-    customer_analysis["TotalQuantity"] = (
-        customer_analysis["TotalQuantity"]
-        .fillna(0)
-    )
-
-    customer_analysis["TotalSpent"] = (
-        customer_analysis["TotalSpent"]
-        .fillna(0)
-    )
-
-    customer_analysis["AverageOrderValue"] = (
-        customer_analysis["AverageOrderValue"]
-        .fillna(0)
-    )
-
-    return customer_analysis
+    return result

@@ -1,17 +1,51 @@
+import pandas as pd
+
+
 def create_features(df):
-    df = df.copy()
 
-    # Calculate total sales
-    if "Quantity" in df.columns and "UnitPrice" in df.columns:
-        df["TotalSales"] = df["Quantity"] * df["UnitPrice"]
+    data = df.copy()
 
-    # Create inventory stock status
-    if "CurrentStock" in df.columns and "ReorderLevel" in df.columns:
-        df["StockStatus"] = df.apply(
-            lambda row: "Reorder"
-            if row["CurrentStock"] <= row["ReorderLevel"]
-            else "In Stock",
-            axis=1
+    # ==================================================
+    # SALES FEATURES
+    # ==================================================
+
+    required_sales_columns = {
+        "Quantity",
+        "UnitPrice"
+    }
+
+    if required_sales_columns.issubset(
+        data.columns
+    ):
+
+        data["Quantity"] = (
+            pd.to_numeric(
+                data["Quantity"],
+                errors="coerce"
+            )
         )
 
-    return df
+        data["UnitPrice"] = (
+            pd.to_numeric(
+                data["UnitPrice"],
+                errors="coerce"
+            )
+        )
+
+        # Calculate revenue
+
+        data["TotalSales"] = (
+            data["Quantity"]
+            * data["UnitPrice"]
+        )
+
+        # Remove duplicate revenue column
+
+        data = data.drop(
+            columns=[
+                "TotalAmount"
+            ],
+            errors="ignore"
+        )
+
+    return data

@@ -1,60 +1,60 @@
-ProductID,TotalQuantity,TotalRevenue,ProductName,Category
-41,15.0,1027110.0,Jeans,Electronics
-87,10.0,703500.0,Tablet,Home Appliances
-67,9.0,581823.0,Monitor,Home Appliances
-84,13.0,577486.0,Sofa,Clothing
-56,10.0,569730.0,Monitor,Home Appliances
-53,8.0,545896.0,Speaker,Electronics
-99,10.0,525070.0,Laptop,Clothing
-3,7.0,474509.0,Jeans,Electronics
-74,6.0,451722.0,Mouse,Home Appliances
-38,6.0,444606.0,Table,Books
-20,9.0,436500.0,Jeans,Books
-59,8.0,424456.0,Jacket,Home Appliances
-45,7.0,416080.0,Book,Electronics
-97,8.0,387752.0,Table,Clothing
-21,7.0,360822.0,Printer,Electronics
-46,5.0,330955.0,Monitor,Clothing
-33,4.0,319032.0,Keyboard,Home Appliances
-49,5.0,300900.0,Chair,Books
-16,5.0,293070.0,Monitor,Books
-94,5.0,292170.0,Laptop,Books
-23,4.0,276828.0,Camera,Home Appliances
-37,5.0,275985.0,Laptop,Furniture
-13,9.0,247707.0,Monitor,Books
-30,4.0,230588.0,Jeans,Clothing
-95,3.0,221025.0,Chair,Home Appliances
-69,3.0,219204.0,Table,Electronics
-26,5.0,214690.0,Printer,Clothing
-60,5.0,199575.0,Printer,Furniture
-64,5.0,199450.0,Jeans,Clothing
-12,4.0,195588.0,Sofa,Clothing
-10,3.0,182697.0,Speaker,Books
-34,3.0,174243.0,Monitor,Home Appliances
-5,3.0,173760.0,Jeans,Books
-81,2.0,156412.0,Camera,Furniture
-44,2.0,150642.0,Laptop,Clothing
-72,7.0,128884.0,Table,Books
-70,3.0,101274.0,Mouse,Clothing
-27,5.0,97815.0,Laptop,Clothing
-86,2.0,88340.0,Monitor,Clothing
-47,6.0,80334.0,Book,Clothing
-14,2.0,75758.0,Chair,Books
-90,1.0,72707.0,Camera,Home Appliances
-6,7.0,70798.0,Table,Home Appliances
-35,1.0,67459.0,Jacket,Furniture
-91,4.0,63620.0,Sofa,Home Appliances
-4,5.0,63020.0,Speaker,Home Appliances
-11,1.0,61373.0,Book,Furniture
-80,4.0,60680.0,Mouse,Furniture
-22,2.0,49848.0,T-Shirt,Furniture
-75,6.0,44106.0,Monitor,Furniture
-63,5.0,42890.0,Keyboard,Electronics
-17,1.0,41604.0,Book,Clothing
-92,5.0,39385.0,Mouse,Books
-31,11.0,39193.0,T-Shirt,Electronics
-100,5.0,39175.0,Table,Furniture
-61,4.0,20860.0,T-Shirt,Home Appliances
-43,2.0,16590.0,Jeans,Electronics
-73,4.0,12400.0,Jeans,Electronics
-15,1.0,8084.0,Jeans,Books
+ProductID,ProductRevenue,QuantitySold,ProductName,Category
+41,1027110.0,15.0,Jeans,Electronics
+87,703500.0,10.0,Tablet,Home Appliances
+67,581823.0,9.0,Monitor,Home Appliances
+84,577486.0,13.0,Sofa,Clothing
+56,569730.0,10.0,Monitor,Home Appliances
+53,545896.0,8.0,Speaker,Electronics
+99,525070.0,10.0,Laptop,Clothing
+3,474509.0,7.0,Jeans,Electronics
+74,451722.0,6.0,Mouse,Home Appliances
+38,444606.0,6.0,Table,Books
+20,436500.0,9.0,Jeans,Books
+59,424456.0,8.0,Jacket,Home Appliances
+45,416080.0,7.0,Book,Electronics
+97,387752.0,8.0,Table,Clothing
+21,360822.0,7.0,Printer,Electronics
+46,330955.0,5.0,Monitor,Clothing
+33,319032.0,4.0,Keyboard,Home Appliances
+49,300900.0,5.0,Chair,Books
+16,293070.0,5.0,Monitor,Books
+94,292170.0,5.0,Laptop,Books
+23,276828.0,4.0,Camera,Home Appliances
+37,275985.0,5.0,Laptop,Furniture
+13,247707.0,9.0,Monitor,Books
+30,230588.0,4.0,Jeans,Clothing
+95,221025.0,3.0,Chair,Home Appliances
+69,219204.0,3.0,Table,Electronics
+26,214690.0,5.0,Printer,Clothing
+60,199575.0,5.0,Printer,Furniture
+64,199450.0,5.0,Jeans,Clothing
+12,195588.0,4.0,Sofa,Clothing
+10,182697.0,3.0,Speaker,Books
+34,174243.0,3.0,Monitor,Home Appliances
+5,173760.0,3.0,Jeans,Books
+81,156412.0,2.0,Camera,Furniture
+44,150642.0,2.0,Laptop,Clothing
+72,128884.0,7.0,Table,Books
+70,101274.0,3.0,Mouse,Clothing
+27,97815.0,5.0,Laptop,Clothing
+86,88340.0,2.0,Monitor,Clothing
+47,80334.0,6.0,Book,Clothing
+14,75758.0,2.0,Chair,Books
+90,72707.0,1.0,Camera,Home Appliances
+6,70798.0,7.0,Table,Home Appliances
+35,67459.0,1.0,Jacket,Furniture
+91,63620.0,4.0,Sofa,Home Appliances
+4,63020.0,5.0,Speaker,Home Appliances
+11,61373.0,1.0,Book,Furniture
+80,60680.0,4.0,Mouse,Furniture
+22,49848.0,2.0,T-Shirt,Furniture
+75,44106.0,6.0,Monitor,Furniture
+63,42890.0,5.0,Keyboard,Electronics
+17,41604.0,1.0,Book,Clothing
+92,39385.0,5.0,Mouse,Books
+31,39193.0,11.0,T-Shirt,Electronics
+100,39175.0,5.0,Table,Furniture
+61,20860.0,4.0,T-Shirt,Home Appliances
+43,16590.0,2.0,Jeans,Electronics
+73,12400.0,4.0,Jeans,Electronics
+15,8084.0,1.0,Jeans,Books

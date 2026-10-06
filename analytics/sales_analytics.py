@@ -1,187 +1,245 @@
-
 import pandas as pd
 
 
-def analyze_sales(sales, products, customers):
-
-    # ==================================================
-    # COPY DATA
-    # ==================================================
+def analyze_sales(
+    sales,
+    products,
+    customers
+):
 
     sales = sales.copy()
     products = products.copy()
     customers = customers.copy()
 
+    # ==================================================
+    # DATE
+    # ==================================================
+
+    sales["SaleDate"] = (
+        pd.to_datetime(
+            sales["SaleDate"],
+            errors="coerce"
+        )
+    )
 
     # ==================================================
     # TOTAL SALES
     # ==================================================
 
-    total_sales = sales["TotalSales"].sum()
-
-    print("\nTotal Sales:", round(total_sales, 2))
-
+    total_sales = (
+        sales[
+            "TotalSales"
+        ].sum()
+    )
 
     # ==================================================
     # MONTHLY SALES
     # ==================================================
 
-    # Convert SaleDate to datetime
-    sales["SaleDate"] = pd.to_datetime(sales["SaleDate"])
+    monthly_data = (
+        sales
+        .dropna(
+            subset=["SaleDate"]
+        )
+        .copy()
+    )
 
-    # Extract month
-    sales["Month"] = sales["SaleDate"].dt.to_period("M")
+    monthly_data[
+        "Month"
+    ] = (
+        monthly_data[
+            "SaleDate"
+        ]
+        .dt
+        .to_period("M")
+        .astype(str)
+    )
 
     monthly_sales = (
-        sales.groupby("Month")["TotalSales"]
+        monthly_data
+        .groupby(
+            "Month",
+            as_index=False
+        )["TotalSales"]
         .sum()
-        .reset_index()
+        .rename(
+            columns={
+                "TotalSales":
+                    "MonthlySales"
+            }
+        )
+        .sort_values(
+            "Month"
+        )
     )
-
-    monthly_sales["Month"] = monthly_sales["Month"].astype(str)
-
-    monthly_sales = monthly_sales.rename(
-        columns={
-            "TotalSales": "MonthlySales"
-        }
-    )
-
 
     # ==================================================
-    # BEST-SELLING PRODUCTS
+    # PRODUCT INFORMATION
     # ==================================================
 
-    best_selling_products = (
-        sales.groupby("ProductID")["Quantity"]
-        .sum()
-        .reset_index()
-    )
-
-    best_selling_products = best_selling_products.rename(
-        columns={
-            "Quantity": "UnitsSold"
-        }
-    )
-
-    best_selling_products = best_selling_products.sort_values(
-        "UnitsSold",
-        ascending=False
-    )
-
-    # Add product information
-    best_selling_products = best_selling_products.merge(
+    product_details = (
         products[
             [
                 "ProductID",
                 "ProductName",
                 "Category"
             ]
-        ],
-        on="ProductID",
-        how="left"
+        ]
+        .drop_duplicates(
+            subset=[
+                "ProductID"
+            ]
+        )
     )
 
+    # ==================================================
+    # BEST SELLING PRODUCTS
+    # ==================================================
+
+    best_selling_products = (
+        sales
+        .groupby(
+            "ProductID",
+            as_index=False
+        )["Quantity"]
+        .sum()
+        .rename(
+            columns={
+                "Quantity":
+                    "UnitsSold"
+            }
+        )
+        .merge(
+            product_details,
+            on="ProductID",
+            how="left"
+        )
+        .sort_values(
+            "UnitsSold",
+            ascending=False
+        )
+    )
 
     # ==================================================
     # CUSTOMER SPENDING
     # ==================================================
 
-    customer_spending = (
-        sales.groupby("CustomerID")["TotalSales"]
-        .sum()
-        .reset_index()
-    )
-
-    customer_spending = customer_spending.rename(
-        columns={
-            "TotalSales": "TotalSpent"
-        }
-    )
-
-    # Sort customers by spending
-    customer_spending = customer_spending.sort_values(
-        "TotalSpent",
-        ascending=False
-    )
-
-    # Add customer information
-    customer_spending = customer_spending.merge(
+    customer_details = (
         customers[
             [
                 "CustomerID",
                 "CustomerName"
             ]
-        ],
-        on="CustomerID",
-        how="left"
+        ]
+        .drop_duplicates(
+            subset=[
+                "CustomerID"
+            ]
+        )
     )
 
+    customer_spending = (
+        sales
+        .groupby(
+            "CustomerID",
+            as_index=False
+        )["TotalSales"]
+        .sum()
+        .rename(
+            columns={
+                "TotalSales":
+                    "TotalSpent"
+            }
+        )
+        .merge(
+            customer_details,
+            on="CustomerID",
+            how="left"
+        )
+        .sort_values(
+            "TotalSpent",
+            ascending=False
+        )
+    )
 
     # ==================================================
-    # PRODUCT WISE REVENUE
+    # PRODUCT REVENUE
     # ==================================================
 
     product_revenue = (
-        sales.groupby("ProductID")
-        .agg(
-            TotalQuantity=("Quantity", "sum"),
-            TotalRevenue=("TotalSales", "sum")
+        sales
+        .groupby(
+            "ProductID",
+            as_index=False
         )
-        .reset_index()
+        .agg(
+            ProductRevenue=(
+                "TotalSales",
+                "sum"
+            ),
+            QuantitySold=(
+                "Quantity",
+                "sum"
+            )
+        )
+        .merge(
+            product_details,
+            on="ProductID",
+            how="left"
+        )
+        .sort_values(
+            "ProductRevenue",
+            ascending=False
+        )
     )
-
-    # Add product information
-    product_revenue = product_revenue.merge(
-        products[
-            [
-                "ProductID",
-                "ProductName",
-                "Category"
-            ]
-        ],
-        on="ProductID",
-        how="left"
-    )
-
-    # Sort products by revenue
-    product_revenue = product_revenue.sort_values(
-        "TotalRevenue",
-        ascending=False
-    )
-
 
     # ==================================================
-    # CATEGORY WISE SALES
+    # CATEGORY SALES
     # ==================================================
 
     category_sales = (
-        product_revenue.groupby("Category")["TotalRevenue"]
-        .sum()
-        .reset_index()
+        product_revenue
+        .groupby(
+            "Category",
+            as_index=False
+        )
+        .agg(
+            TotalSales=(
+                "ProductRevenue",
+                "sum"
+            ),
+            QuantitySold=(
+                "QuantitySold",
+                "sum"
+            )
+        )
+        .sort_values(
+            "TotalSales",
+            ascending=False
+        )
     )
-
-    category_sales = category_sales.rename(
-        columns={
-            "TotalRevenue": "CategorySales"
-        }
-    )
-
-    # Sort categories by sales
-    category_sales = category_sales.sort_values(
-        "CategorySales",
-        ascending=False
-    )
-
 
     # ==================================================
     # RETURN RESULTS
     # ==================================================
 
     return {
-        "total_sales": total_sales,
-        "monthly_sales": monthly_sales,
-        "best_selling_products": best_selling_products,
-        "customer_spending": customer_spending,
-        "product_revenue": product_revenue,
-        "category_sales": category_sales
+
+        "total_sales":
+            total_sales,
+
+        "monthly_sales":
+            monthly_sales,
+
+        "best_selling_products":
+            best_selling_products,
+
+        "customer_spending":
+            customer_spending,
+
+        "product_revenue":
+            product_revenue,
+
+        "category_sales":
+            category_sales
     }

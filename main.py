@@ -11,7 +11,6 @@ import streamlit as st
 from config import PROJECT_NAME, VERSION
 
 from database.database import engine, Base, SessionLocal
-from database.models import Product, Customer, Order, Inventory, Finance
 from database.crud import *
 
 from data_collection import load_data
@@ -31,8 +30,9 @@ from ML.sales_forecasting import (
     save_forecast,
     plot_actual_vs_predicted
 )
-from chatbot.business_context import create_business_context
+
 from chatbot.chatbot import ask_business_chatbot
+
 
 # ==================================================
 # PROJECT PATHS
@@ -43,7 +43,7 @@ DATA_DIR = PROJECT_DIR / "data"
 
 
 # ==================================================
-# MAIN ANALYTICS PROGRAM
+# MAIN BACKEND PROGRAM
 # ==================================================
 
 def main():
@@ -57,7 +57,9 @@ def main():
     print("Version", VERSION)
     print("=" * 50)
 
-    print("Welcome to the AI Business Analytics Platform")
+    print(
+        "Welcome to the AI Business Analytics Platform"
+    )
 
     # ==================================================
     # LOAD DATA
@@ -96,13 +98,25 @@ def main():
 
         clean_datasets[name] = feature_df
 
-        # Save processed data back into CSV files
         feature_df.to_csv(
             DATA_DIR / f"{name}.csv",
             index=False
         )
 
-        print(name, "updated successfully")
+        print(
+            name,
+            "updated successfully"
+        )
+
+    # ==================================================
+    # COMMON DATASETS
+    # ==================================================
+
+    sales = clean_datasets["sales"]
+    customers = clean_datasets["customers"]
+    products = clean_datasets["products"]
+    inventory = clean_datasets["inventory"]
+    finance = clean_datasets["finance"]
 
     # ==================================================
     # CUSTOMER ANALYTICS
@@ -113,18 +127,22 @@ def main():
     print("=" * 50)
 
     customer_analysis = analyze_customers(
-        clean_datasets["customers"],
-        clean_datasets["sales"]
+        customers,
+        sales
     )
 
-    print(customer_analysis.head())
+    print(
+        customer_analysis.head()
+    )
 
     customer_analysis.to_csv(
         DATA_DIR / "customer_analysis.csv",
         index=False
     )
 
-    print("Customer analytics saved successfully!")
+    print(
+        "Customer analytics saved successfully!"
+    )
 
     # ==================================================
     # INVENTORY ANALYTICS
@@ -134,22 +152,42 @@ def main():
     print("INVENTORY ANALYTICS")
     print("=" * 50)
 
-    inventory = clean_datasets["inventory"]
-    products = clean_datasets["products"]
-
     inventory_analysis = analyze_inventory(
         inventory,
         products
     )
 
-    print(inventory_analysis.head())
+    print(
+        inventory_analysis.head()
+    )
 
     inventory_analysis.to_csv(
         DATA_DIR / "inventory_analysis.csv",
         index=False
     )
 
-    print("Inventory analytics saved successfully!")
+    print(
+        "Inventory analytics saved successfully!"
+    )
+
+    # ==================================================
+    # LEGACY TOTALAMOUNT COMPATIBILITY
+    # ==================================================
+
+    # TotalSales is the main revenue column.
+    # Some older files may still expect TotalAmount.
+    # This creates a temporary copy only.
+
+    legacy_sales = sales.copy()
+
+    if (
+        "TotalAmount" not in legacy_sales.columns
+        and "TotalSales" in legacy_sales.columns
+    ):
+
+        legacy_sales["TotalAmount"] = (
+            legacy_sales["TotalSales"]
+        )
 
     # ==================================================
     # FINANCIAL ANALYTICS
@@ -159,26 +197,29 @@ def main():
     print("FINANCIAL ANALYTICS")
     print("=" * 50)
 
-    finance = clean_datasets["finance"]
-    sales = clean_datasets["sales"]
-
     financial_analysis = analyze_financial(
         finance,
-        sales
+        legacy_sales
     )
 
     print("\nFinancial Summary:")
 
     print(
-        financial_analysis["financial_summary"]
+        financial_analysis[
+            "financial_summary"
+        ]
     )
 
-    financial_analysis["financial_summary"].to_csv(
+    financial_analysis[
+        "financial_summary"
+    ].to_csv(
         DATA_DIR / "financial_summary.csv",
         index=False
     )
 
-    print("Financial analytics saved successfully!")
+    print(
+        "Financial analytics saved successfully!"
+    )
 
     # ==================================================
     # SALES ANALYTICS
@@ -189,9 +230,9 @@ def main():
     print("=" * 50)
 
     sales_analysis = analyze_sales(
-        clean_datasets["sales"],
-        clean_datasets["products"],
-        clean_datasets["customers"]
+        sales,
+        products,
+        customers
     )
 
     # ==================================================
@@ -211,13 +252,15 @@ def main():
     # MONTHLY SALES
     # ==================================================
 
+    monthly_sales = sales_analysis[
+        "monthly_sales"
+    ]
+
     print("\nMonthly Sales:")
 
-    print(
-        sales_analysis["monthly_sales"]
-    )
+    print(monthly_sales)
 
-    sales_analysis["monthly_sales"].to_csv(
+    monthly_sales.to_csv(
         DATA_DIR / "monthly_sales.csv",
         index=False
     )
@@ -226,17 +269,19 @@ def main():
     # BEST SELLING PRODUCTS
     # ==================================================
 
+    best_selling_products = (
+        sales_analysis[
+            "best_selling_products"
+        ]
+    )
+
     print("\nBest Selling Products:")
 
     print(
-        sales_analysis[
-            "best_selling_products"
-        ].head(10)
+        best_selling_products.head(10)
     )
 
-    sales_analysis[
-        "best_selling_products"
-    ].to_csv(
+    best_selling_products.to_csv(
         DATA_DIR / "best_selling_products.csv",
         index=False
     )
@@ -245,11 +290,13 @@ def main():
     # CUSTOMER SPENDING
     # ==================================================
 
-    print("\nTop Customers by Spending:")
+    customer_spending = (
+        sales_analysis[
+            "customer_spending"
+        ]
+    )
 
-    customer_spending = sales_analysis[
-        "customer_spending"
-    ]
+    print("\nCustomer Spending:")
 
     print(
         customer_spending.head(10)
@@ -260,17 +307,17 @@ def main():
         index=False
     )
 
-    print("Customer spending saved successfully!")
-
     # ==================================================
     # PRODUCT REVENUE
     # ==================================================
 
-    print("\nProduct Wise Revenue:")
+    product_revenue = (
+        sales_analysis[
+            "product_revenue"
+        ]
+    )
 
-    product_revenue = sales_analysis[
-        "product_revenue"
-    ]
+    print("\nProduct Revenue:")
 
     print(
         product_revenue.head(10)
@@ -281,17 +328,17 @@ def main():
         index=False
     )
 
-    print("Product revenue saved successfully!")
-
     # ==================================================
     # CATEGORY SALES
     # ==================================================
 
-    print("\nCategory Wise Sales:")
+    category_sales = (
+        sales_analysis[
+            "category_sales"
+        ]
+    )
 
-    category_sales = sales_analysis[
-        "category_sales"
-    ]
+    print("\nCategory Sales:")
 
     print(category_sales)
 
@@ -300,9 +347,9 @@ def main():
         index=False
     )
 
-    print("Category sales saved successfully!")
-
-    print("Sales analytics saved successfully!")
+    print(
+        "Sales analytics saved successfully!"
+    )
 
     # ==================================================
     # BUSINESS SUMMARY
@@ -312,15 +359,25 @@ def main():
     print("BUSINESS SUMMARY")
     print("=" * 50)
 
-    total_sales = sales["TotalSales"].sum()
+    total_sales = sales[
+        "TotalSales"
+    ].sum()
 
-    average_sale = sales["TotalSales"].mean()
+    average_sale = sales[
+        "TotalSales"
+    ].mean()
 
-    units_sold = sales["Quantity"].sum()
+    units_sold = sales[
+        "Quantity"
+    ].sum()
 
-    total_orders = sales["OrderID"].nunique()
+    total_orders = sales[
+        "OrderID"
+    ].nunique()
 
-    total_customers = sales["CustomerID"].nunique()
+    total_customers = sales[
+        "CustomerID"
+    ].nunique()
 
     print(
         "Total Sales: $",
@@ -369,27 +426,27 @@ def main():
 
         add_customers(
             db,
-            clean_datasets["customers"]
+            customers
         )
 
         add_products(
             db,
-            clean_datasets["products"]
+            products
         )
 
         add_inventory(
             db,
-            clean_datasets["inventory"]
+            inventory
         )
 
         add_finance(
             db,
-            clean_datasets["finance"]
+            finance
         )
 
         add_orders(
             db,
-            clean_datasets["sales"]
+            legacy_sales
         )
 
     finally:
@@ -418,7 +475,7 @@ def main():
         daily_sales.head()
     )
 
-    # Train forecasting model
+    # Train model
 
     model = train_sales_model(
         daily_sales
@@ -429,7 +486,7 @@ def main():
         "trained successfully!"
     )
 
-    # Predict next seven days
+    # Predict seven days
 
     forecast = predict_sales(
         model,
@@ -457,21 +514,188 @@ def main():
         "\nSales forecast saved successfully!"
     )
 
-    # Create forecasting graph
+    # Forecast visualization
 
     print(
         "\nCreating Actual vs "
         "Predicted Sales graph..."
     )
 
-    plot_actual_vs_predicted(
-        daily_sales,
-        forecast
-    )
+    try:
+
+        plot_actual_vs_predicted(
+            daily_sales,
+            forecast,
+            DATA_DIR / "actual_vs_predicted.png"
+        )
+
+    except TypeError:
+
+        # Compatibility if your old function
+        # still accepts only two arguments.
+
+        plot_actual_vs_predicted(
+            daily_sales,
+            forecast
+        )
 
     print(
         "Sales visualization completed!"
     )
+
+
+# ==================================================
+# LOCAL BUSINESS QUESTION FUNCTION
+# ==================================================
+
+def answer_local_business_question(
+    question,
+    total_revenue,
+    total_orders,
+    total_customers,
+    total_quantity,
+    top_product_name,
+    top_product_revenue,
+    finance_revenue,
+    finance_expenses,
+    finance_profit
+):
+
+    # Normalize wording.
+
+    question_lower = (
+        question
+        .lower()
+        .strip()
+        .replace("_", " ")
+    )
+
+    # ==================================================
+    # TOTAL REVENUE / TOTAL SALES / TOTAL AMOUNT
+    # ==================================================
+
+    if (
+        "revenue" in question_lower
+        and "finance" not in question_lower
+    ):
+
+        return (
+            f"The total revenue is "
+            f"${total_revenue:,.2f}."
+        )
+
+    if (
+        "total sales" in question_lower
+        or "totalsales" in question_lower
+        or "total amount" in question_lower
+        or "totalamount" in question_lower
+    ):
+
+        return (
+            f"The total revenue is "
+            f"${total_revenue:,.2f}."
+        )
+
+    # ==================================================
+    # ORDERS
+    # ==================================================
+
+    if "order" in question_lower:
+
+        return (
+            f"The total number of orders is "
+            f"{total_orders:,}."
+        )
+
+    # ==================================================
+    # CUSTOMERS
+    # ==================================================
+
+    if "customer" in question_lower:
+
+        return (
+            f"There are "
+            f"{total_customers:,} "
+            f"customers with purchases."
+        )
+
+    # ==================================================
+    # QUANTITY / ITEMS / UNITS
+    # ==================================================
+
+    if (
+        "quantity" in question_lower
+        or "items sold" in question_lower
+        or "item sold" in question_lower
+        or "units sold" in question_lower
+        or "unit sold" in question_lower
+        or "how many items" in question_lower
+        or "how many units" in question_lower
+    ):
+
+        return (
+            f"The total quantity sold is "
+            f"{total_quantity:,.0f} items."
+        )
+
+    # ==================================================
+    # TOP PRODUCT
+    # ==================================================
+
+    if (
+        "top product" in question_lower
+        or "best product" in question_lower
+        or "best selling product" in question_lower
+        or "best-selling product" in question_lower
+        or "highest revenue product" in question_lower
+        or "most revenue product" in question_lower
+    ):
+
+        return (
+            f"The top product by revenue is "
+            f"{top_product_name}, with revenue of "
+            f"${top_product_revenue:,.2f}."
+        )
+
+    # ==================================================
+    # EXPENSES
+    # ==================================================
+
+    if "expense" in question_lower:
+
+        return (
+            f"The total expenses are "
+            f"${finance_expenses:,.2f}."
+        )
+
+    # ==================================================
+    # PROFIT
+    # ==================================================
+
+    if "profit" in question_lower:
+
+        return (
+            f"The total profit is "
+            f"${finance_profit:,.2f}."
+        )
+
+    # ==================================================
+    # FINANCE REVENUE
+    # ==================================================
+
+    if (
+        "finance revenue" in question_lower
+        or "financial revenue" in question_lower
+    ):
+
+        return (
+            f"The finance dataset reports "
+            f"${finance_revenue:,.2f} in revenue."
+        )
+
+    # No local answer available.
+
+    return None
 
 
 # ==================================================
@@ -485,7 +709,9 @@ def run_dashboard():
     # ==================================================
 
     st.set_page_config(
-        page_title="AI Business Analytics Dashboard",
+        page_title=(
+            "AI Business Analytics Dashboard"
+        ),
         page_icon="📊",
         layout="wide"
     )
@@ -497,32 +723,32 @@ def run_dashboard():
     @st.cache_data
     def load_dashboard_data():
 
-        sales = pd.read_csv(
+        sales_data = pd.read_csv(
             DATA_DIR / "sales.csv"
         )
 
-        products = pd.read_csv(
+        products_data = pd.read_csv(
             DATA_DIR / "products.csv"
         )
 
-        customers = pd.read_csv(
+        customers_data = pd.read_csv(
             DATA_DIR / "customers.csv"
         )
 
-        inventory = pd.read_csv(
+        inventory_data = pd.read_csv(
             DATA_DIR / "inventory.csv"
         )
 
-        finance = pd.read_csv(
+        finance_data = pd.read_csv(
             DATA_DIR / "finance.csv"
         )
 
         return (
-            sales,
-            products,
-            customers,
-            inventory,
-            finance
+            sales_data,
+            products_data,
+            customers_data,
+            inventory_data,
+            finance_data
         )
 
     try:
@@ -538,8 +764,8 @@ def run_dashboard():
     except FileNotFoundError:
 
         st.error(
-            "Required CSV files were not found. "
-            "Run 'python main.py' first."
+            "Required CSV files are missing. "
+            "Run python main.py first."
         )
 
         st.stop()
@@ -547,9 +773,6 @@ def run_dashboard():
     # ==================================================
     # REVENUE COLUMN
     # ==================================================
-
-    # TotalSales is the preferred column.
-    # TotalAmount is only used as a fallback.
 
     if "TotalSales" in sales.columns:
 
@@ -562,13 +785,14 @@ def run_dashboard():
     else:
 
         st.error(
-            "Sales data must contain TotalSales."
+            "sales.csv must contain "
+            "TotalSales or TotalAmount."
         )
 
         st.stop()
 
     # ==================================================
-    # PAGE HEADER
+    # HEADER
     # ==================================================
 
     st.title(
@@ -576,8 +800,8 @@ def run_dashboard():
     )
 
     st.write(
-        "Sales, Customer, Product, "
-        "Inventory and Financial Analytics"
+        "Sales, Customer, Product, Inventory "
+        "and Financial Analytics"
     )
 
     st.divider()
@@ -594,9 +818,7 @@ def run_dashboard():
         "Filters"
     )
 
-    # ==================================================
-    # CATEGORY FILTER
-    # ==================================================
+    # Category filter
 
     categories = (
         ["All"]
@@ -677,12 +899,12 @@ def run_dashboard():
     )
 
     st.sidebar.write(
-        "📋 Detailed Data"
+        "🤖 AI Business Assistant"
     )
 
-    # ==================================================
-    # REFRESH BUTTON
-    # ==================================================
+    st.sidebar.write(
+        "📋 Detailed Data"
+    )
 
     st.sidebar.divider()
 
@@ -691,7 +913,6 @@ def run_dashboard():
     ):
 
         st.cache_data.clear()
-
         st.rerun()
 
     # ==================================================
@@ -738,7 +959,7 @@ def run_dashboard():
 
         st.metric(
             "💰 Total Revenue",
-            f"${total_revenue:,.0f}"
+            f"${total_revenue:,.2f}"
         )
 
     with col2:
@@ -772,8 +993,6 @@ def run_dashboard():
         "📈 Sales Performance"
     )
 
-    # Convert sales date to datetime
-
     filtered_sales[
         "SaleDate"
     ] = pd.to_datetime(
@@ -795,9 +1014,7 @@ def run_dashboard():
         .copy()
     )
 
-    monthly_data[
-        "Month"
-    ] = (
+    monthly_data["Month"] = (
         monthly_data[
             "SaleDate"
         ]
@@ -815,10 +1032,6 @@ def run_dashboard():
         .sum()
     )
 
-    # ==================================================
-    # MONTHLY LINE CHART
-    # ==================================================
-
     fig_monthly = px.line(
         monthly_sales,
         x="Month",
@@ -829,12 +1042,6 @@ def run_dashboard():
 
     fig_monthly.update_layout(
         template="plotly_white",
-        margin=dict(
-            l=20,
-            r=20,
-            t=50,
-            b=20
-        ),
         xaxis_title="Month",
         yaxis_title="Revenue"
     )
@@ -862,46 +1069,31 @@ def run_dashboard():
         .sum()
     )
 
-    # ==================================================
-    # CATEGORY PIE CHART
-    # ==================================================
-
     fig_category = px.pie(
         category_sales,
         names="Category",
         values=revenue_column,
         title=(
-            "Revenue Distribution "
-            "by Category"
-        )
-    )
-
-    fig_category.update_layout(
-        template="plotly_white",
-        margin=dict(
-            l=20,
-            r=20,
-            t=50,
-            b=20
+            "Revenue Distribution by Category"
         )
     )
 
     # ==================================================
-    # DISPLAY SALES CHARTS SIDE BY SIDE
+    # SHOW SALES CHARTS
     # ==================================================
 
-    chart_col1, chart_col2 = (
+    chart1, chart2 = (
         st.columns(2)
     )
 
-    with chart_col1:
+    with chart1:
 
         st.plotly_chart(
             fig_monthly,
             use_container_width=True
         )
 
-    with chart_col2:
+    with chart2:
 
         st.plotly_chart(
             fig_category,
@@ -941,9 +1133,6 @@ def run_dashboard():
         )
     )
 
-    # Show top 15 products so chart
-    # remains readable.
-
     top_products = (
         product_sales.head(15)
     )
@@ -957,12 +1146,6 @@ def run_dashboard():
 
     fig_products.update_layout(
         template="plotly_white",
-        margin=dict(
-            l=20,
-            r=20,
-            t=50,
-            b=20
-        ),
         xaxis_title="Product",
         yaxis_title="Revenue"
     )
@@ -993,33 +1176,26 @@ def run_dashboard():
             forecast_file
         )
 
-        forecast[
-            "ds"
-        ] = pd.to_datetime(
-            forecast["ds"],
-            errors="coerce"
-        )
-
-        # Use complete sales data to determine
-        # the latest historical sales date.
-
-        all_sales_dates = (
+        forecast["ds"] = (
             pd.to_datetime(
-                sales["SaleDate"],
+                forecast["ds"],
                 errors="coerce"
             )
         )
 
-        last_sales_date = (
-            all_sales_dates.max()
+        sales_dates = pd.to_datetime(
+            sales["SaleDate"],
+            errors="coerce"
         )
 
-        # Get future predictions only.
+        last_sale_date = (
+            sales_dates.max()
+        )
 
         future_forecast = (
             forecast[
                 forecast["ds"]
-                > last_sales_date
+                > last_sale_date
             ]
             .sort_values("ds")
             .head(7)
@@ -1033,19 +1209,12 @@ def run_dashboard():
                 y="yhat",
                 markers=True,
                 title=(
-                    "Next 7 Days "
-                    "Sales Forecast"
+                    "Next 7 Days Sales Forecast"
                 )
             )
 
             fig_forecast.update_layout(
                 template="plotly_white",
-                margin=dict(
-                    l=20,
-                    r=20,
-                    t=50,
-                    b=20
-                ),
                 xaxis_title="Date",
                 yaxis_title=(
                     "Predicted Revenue"
@@ -1055,10 +1224,6 @@ def run_dashboard():
             st.plotly_chart(
                 fig_forecast,
                 use_container_width=True
-            )
-
-            st.write(
-                "Forecasted Sales:"
             )
 
             forecast_display = (
@@ -1071,12 +1236,10 @@ def run_dashboard():
                     ]
                 ]
                 .copy()
-            )
-
-            forecast_display = (
-                forecast_display.rename(
+                .rename(
                     columns={
-                        "ds": "Date",
+                        "ds":
+                            "Date",
                         "yhat":
                             "Predicted Sales",
                         "yhat_lower":
@@ -1104,13 +1267,12 @@ def run_dashboard():
 
         st.info(
             "Run python main.py first "
-            "to generate the sales forecast."
+            "to generate the forecast."
         )
 
     st.caption(
-        "The sales forecast represents the "
-        "overall business and is not changed "
-        "by the category filter."
+        "The forecast represents overall "
+        "business sales."
     )
 
     st.divider()
@@ -1123,56 +1285,239 @@ def run_dashboard():
         "💵 Financial Overview"
     )
 
-    if (
-        "Revenue" in finance.columns
-        and "Expenses" in finance.columns
-    ):
+    finance_revenue = 0
+    finance_expenses = 0
+    finance_profit = 0
+
+    if "Revenue" in finance.columns:
 
         finance_revenue = (
-            finance[
-                "Revenue"
-            ].sum()
+            finance["Revenue"].sum()
         )
+
+    if "Expenses" in finance.columns:
 
         finance_expenses = (
-            finance[
-                "Expenses"
-            ].sum()
+            finance["Expenses"].sum()
         )
 
-        if "Profit" in finance.columns:
+    if "Profit" in finance.columns:
 
-            finance_profit = (
-                finance[
-                    "Profit"
-                ].sum()
+        finance_profit = (
+            finance["Profit"].sum()
+        )
+
+    elif (
+        "Revenue" in finance.columns
+        and
+        "Expenses" in finance.columns
+    ):
+
+        finance_profit = (
+            finance_revenue
+            - finance_expenses
+        )
+
+    fin1, fin2, fin3 = (
+        st.columns(3)
+    )
+
+    fin1.metric(
+        "Revenue",
+        f"${finance_revenue:,.2f}"
+    )
+
+    fin2.metric(
+        "Expenses",
+        f"${finance_expenses:,.2f}"
+    )
+
+    fin3.metric(
+        "Profit",
+        f"${finance_profit:,.2f}"
+    )
+
+    st.divider()
+
+    # ==================================================
+    # AI BUSINESS ASSISTANT
+    # ==================================================
+
+    st.subheader(
+        "🤖 AI Business Assistant"
+    )
+
+    st.write(
+        "Ask questions about your business data."
+    )
+
+    # ==================================================
+    # TOP PRODUCT
+    # ==================================================
+
+    top_product_name = "N/A"
+    top_product_revenue = 0
+
+    if not product_sales.empty:
+
+        top_product_name = (
+            product_sales.iloc[
+                0
+            ]["ProductName"]
+        )
+
+        top_product_revenue = (
+            product_sales.iloc[
+                0
+            ][revenue_column]
+        )
+
+    # ==================================================
+    # BUSINESS CONTEXT
+    # ==================================================
+
+    business_context = f"""
+Selected Category: {selected_category}
+
+Total Revenue: ${total_revenue:,.2f}
+
+Total Orders: {total_orders}
+
+Total Customers: {total_customers}
+
+Total Quantity Sold: {total_quantity:,.0f}
+
+Top Product: {top_product_name}
+
+Top Product Revenue:
+${top_product_revenue:,.2f}
+
+Finance Revenue:
+${finance_revenue:,.2f}
+
+Finance Expenses:
+${finance_expenses:,.2f}
+
+Finance Profit:
+${finance_profit:,.2f}
+"""
+
+    # ==================================================
+    # CHAT HISTORY
+    # ==================================================
+
+    if "messages" not in st.session_state:
+
+        st.session_state[
+            "messages"
+        ] = []
+
+    for message in (
+        st.session_state[
+            "messages"
+        ]
+    ):
+
+        with st.chat_message(
+            message["role"]
+        ):
+
+            st.write(
+                message["content"]
             )
 
-        else:
+    # ==================================================
+    # CHAT INPUT
+    # ==================================================
 
-            finance_profit = (
-                finance_revenue
-                - finance_expenses
+    user_question = (
+        st.chat_input(
+            "Ask a question "
+            "about your business..."
+        )
+    )
+
+    if user_question:
+
+        # Save user message
+
+        st.session_state[
+            "messages"
+        ].append(
+            {
+                "role": "user",
+                "content": user_question
+            }
+        )
+
+        with st.chat_message(
+            "user"
+        ):
+
+            st.write(
+                user_question
             )
 
-        fin1, fin2, fin3 = (
-            st.columns(3)
+        # ==================================================
+        # TRY LOCAL ANSWER FIRST
+        # ==================================================
+
+        answer = answer_local_business_question(
+            question=user_question,
+            total_revenue=total_revenue,
+            total_orders=total_orders,
+            total_customers=total_customers,
+            total_quantity=total_quantity,
+            top_product_name=top_product_name,
+            top_product_revenue=top_product_revenue,
+            finance_revenue=finance_revenue,
+            finance_expenses=finance_expenses,
+            finance_profit=finance_profit
         )
 
-        fin1.metric(
-            "Revenue",
-            f"${finance_revenue:,.0f}"
+        # ==================================================
+        # USE OPENAI ONLY IF LOCAL ANSWER NOT FOUND
+        # ==================================================
+
+        if answer is None:
+
+            answer = ask_business_chatbot(
+                user_question,
+                business_context
+            )
+
+        # Save assistant response
+
+        st.session_state[
+            "messages"
+        ].append(
+            {
+                "role": "assistant",
+                "content": answer
+            }
         )
 
-        fin2.metric(
-            "Expenses",
-            f"${finance_expenses:,.0f}"
-        )
+        with st.chat_message(
+            "assistant"
+        ):
 
-        fin3.metric(
-            "Profit",
-            f"${finance_profit:,.0f}"
-        )
+            st.write(
+                answer
+            )
+
+    # ==================================================
+    # CLEAR CHAT
+    # ==================================================
+
+    if st.button(
+        "🗑 Clear Chat"
+    ):
+
+        st.session_state[
+            "messages"
+        ] = []
+
+        st.rerun()
 
     st.divider()
 
@@ -1197,7 +1542,7 @@ def run_dashboard():
     )
 
     # ==================================================
-    # DOWNLOAD DATA
+    # DOWNLOAD REPORT
     # ==================================================
 
     st.subheader(
@@ -1229,49 +1574,10 @@ def run_dashboard():
         "AI Business Analytics Platform • "
         "Sales & Business Intelligence Dashboard"
     )
-    # ==================================================
-    # OPENAI 
-    # ==================================================
-    st.divider()
 
-st.subheader("🤖 AI Business Assistant")
 
-st.write(
-    "Ask questions about your business data."
-)
-
-question = st.chat_input(
-    "Ask a business question..."
-)
-
-if question:
-
-    st.chat_message(
-        "user"
-    ).write(question)
-
-    business_context = create_business_context(
-        sales,
-        products,
-        customers,
-        inventory,
-        finance
-    )
-
-    with st.spinner(
-        "Analyzing business data..."
-    ):
-
-        answer = ask_business_chatbot(
-            question,
-            business_context
-        )
-
-    st.chat_message(
-        "assistant"
-    ).write(answer)
 # ==================================================
-# DETECT HOW MAIN.PY IS BEING RUN
+# CHECK IF STREAMLIT IS RUNNING
 # ==================================================
 
 def running_in_streamlit():
@@ -1282,11 +1588,14 @@ def running_in_streamlit():
             get_script_run_ctx
         )
 
-        return (
+        context = (
             get_script_run_ctx(
                 suppress_warning=True
             )
-            is not None
+        )
+
+        return (
+            context is not None
         )
 
     except Exception:
