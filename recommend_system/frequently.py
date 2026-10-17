@@ -1,5 +1,13 @@
+# ==================================================
+# IMPORTS
+# ==================================================
+
 import pandas as pd
 
+
+# ==================================================
+# FREQUENTLY BOUGHT TOGETHER
+# ==================================================
 
 def frequently_bought_together(
     sales,
@@ -8,19 +16,79 @@ def frequently_bought_together(
 ):
 
     """
-    Find products purchased in the same
-    orders as the selected product.
+    Find products that are frequently purchased
+    in the same orders as the selected product.
+
+    Parameters
+    ----------
+    sales : pandas.DataFrame
+        Sales transaction data.
+
+    product_id : int
+        Product selected by the user.
+
+    n : int
+        Maximum number of recommendations.
+
+    Returns
+    -------
+    pandas.DataFrame
+        ProductID and Frequency.
     """
 
     sales = sales.copy()
 
     # ==================================================
-    # ORDERS CONTAINING SELECTED PRODUCT
+    # VALIDATE COLUMNS
+    # ==================================================
+
+    required_columns = {
+        "OrderID",
+        "ProductID"
+    }
+
+    missing_columns = (
+        required_columns
+        - set(
+            sales.columns
+        )
+    )
+
+    if missing_columns:
+
+        raise ValueError(
+            "Missing required sales columns: "
+            + ", ".join(
+                sorted(
+                    missing_columns
+                )
+            )
+        )
+
+    # ==================================================
+    # REMOVE DUPLICATES
+    # ==================================================
+
+    # Each product should only count once
+    # inside the same order.
+
+    order_products = (
+        sales[
+            [
+                "OrderID",
+                "ProductID"
+            ]
+        ]
+        .drop_duplicates()
+    )
+
+    # ==================================================
+    # FIND ORDERS CONTAINING SELECTED PRODUCT
     # ==================================================
 
     selected_orders = (
-        sales[
-            sales[
+        order_products[
+            order_products[
                 "ProductID"
             ]
             == product_id
@@ -29,6 +97,8 @@ def frequently_bought_together(
         ]
         .unique()
     )
+
+    # Product was never purchased.
 
     if (
         len(
@@ -45,29 +115,36 @@ def frequently_bought_together(
         )
 
     # ==================================================
-    # RELATED SALES
+    # GET OTHER PRODUCTS FROM SAME ORDERS
     # ==================================================
 
-    related_sales = sales[
-        sales[
-            "OrderID"
-        ].isin(
-            selected_orders
-        )
-    ]
+    related_products = (
+        order_products[
+            order_products[
+                "OrderID"
+            ]
+            .isin(
+                selected_orders
+            )
+        ]
+    )
 
     # ==================================================
     # REMOVE ORIGINAL PRODUCT
     # ==================================================
 
-    related_products = related_sales[
-        related_sales[
-            "ProductID"
+    related_products = (
+        related_products[
+            related_products[
+                "ProductID"
+            ]
+            != product_id
         ]
-        != product_id
-    ]
+    )
 
-    if related_products.empty:
+    if (
+        related_products.empty
+    ):
 
         return pd.DataFrame(
             columns=[
@@ -77,7 +154,7 @@ def frequently_bought_together(
         )
 
     # ==================================================
-    # COUNT OCCURRENCES
+    # COUNT CO-PURCHASE FREQUENCY
     # ==================================================
 
     recommendations = (
@@ -90,10 +167,25 @@ def frequently_bought_together(
             name="Frequency"
         )
         .sort_values(
-            "Frequency",
-            ascending=False
+            [
+                "Frequency",
+                "ProductID"
+            ],
+            ascending=[
+                False,
+                True
+            ]
         )
-        .head(n)
+        .head(
+            n
+        )
+        .reset_index(
+            drop=True
+        )
     )
+
+    # ==================================================
+    # RETURN RESULTS
+    # ==================================================
 
     return recommendations
