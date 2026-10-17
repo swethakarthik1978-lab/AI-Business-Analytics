@@ -33,6 +33,12 @@ from ML.sales_forecasting import (
 
 from chatbot.chatbot import ask_business_chatbot
 
+from recommend_system import (
+    recommend_similar_products,
+    frequently_bought_together,
+    personalized_recommendations
+)
+
 
 # ==================================================
 # PROJECT PATHS
@@ -40,6 +46,20 @@ from chatbot.chatbot import ask_business_chatbot
 
 PROJECT_DIR = Path(__file__).resolve().parent
 DATA_DIR = PROJECT_DIR / "data"
+
+DATA_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+
+# ==================================================
+# HTML HELPER
+# ==================================================
+
+def render_html(html):
+
+    st.html(html)
 
 
 # ==================================================
@@ -82,9 +102,14 @@ def main():
 
     for name, df in datasets.items():
 
-        print("CLEANING", name)
+        print(
+            "CLEANING",
+            name
+        )
 
-        clean_datasets[name] = clean_dataframe(df)
+        clean_datasets[name] = clean_dataframe(
+            df
+        )
 
     # ==================================================
     # FEATURE ENGINEERING
@@ -94,7 +119,9 @@ def main():
 
     for name, df in clean_datasets.items():
 
-        feature_df = create_features(df)
+        feature_df = create_features(
+            df
+        )
 
         clean_datasets[name] = feature_df
 
@@ -113,18 +140,38 @@ def main():
     # ==================================================
 
     sales = clean_datasets["sales"]
-    customers = clean_datasets["customers"]
-    products = clean_datasets["products"]
-    inventory = clean_datasets["inventory"]
-    finance = clean_datasets["finance"]
+
+    customers = clean_datasets[
+        "customers"
+    ]
+
+    products = clean_datasets[
+        "products"
+    ]
+
+    inventory = clean_datasets[
+        "inventory"
+    ]
+
+    finance = clean_datasets[
+        "finance"
+    ]
 
     # ==================================================
     # CUSTOMER ANALYTICS
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("CUSTOMER ANALYTICS")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "CUSTOMER ANALYTICS"
+    )
+
+    print(
+        "=" * 50
+    )
 
     customer_analysis = analyze_customers(
         customers,
@@ -148,9 +195,17 @@ def main():
     # INVENTORY ANALYTICS
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("INVENTORY ANALYTICS")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "INVENTORY ANALYTICS"
+    )
+
+    print(
+        "=" * 50
+    )
 
     inventory_analysis = analyze_inventory(
         inventory,
@@ -171,38 +226,49 @@ def main():
     )
 
     # ==================================================
-    # LEGACY TOTALAMOUNT COMPATIBILITY
+    # TOTALAMOUNT COMPATIBILITY
     # ==================================================
-
-    # TotalSales is the main revenue column.
-    # Some older files may still expect TotalAmount.
-    # This creates a temporary copy only.
 
     legacy_sales = sales.copy()
 
     if (
-        "TotalAmount" not in legacy_sales.columns
-        and "TotalSales" in legacy_sales.columns
+        "TotalAmount"
+        not in legacy_sales.columns
+        and
+        "TotalSales"
+        in legacy_sales.columns
     ):
 
-        legacy_sales["TotalAmount"] = (
-            legacy_sales["TotalSales"]
-        )
+        legacy_sales[
+            "TotalAmount"
+        ] = legacy_sales[
+            "TotalSales"
+        ]
 
     # ==================================================
     # FINANCIAL ANALYTICS
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("FINANCIAL ANALYTICS")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "FINANCIAL ANALYTICS"
+    )
+
+    print(
+        "=" * 50
+    )
 
     financial_analysis = analyze_financial(
         finance,
         legacy_sales
     )
 
-    print("\nFinancial Summary:")
+    print(
+        "\nFinancial Summary:"
+    )
 
     print(
         financial_analysis[
@@ -225,9 +291,17 @@ def main():
     # SALES ANALYTICS
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("SALES ANALYTICS")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "SALES ANALYTICS"
+    )
+
+    print(
+        "=" * 50
+    )
 
     sales_analysis = analyze_sales(
         sales,
@@ -235,39 +309,26 @@ def main():
         customers
     )
 
-    # ==================================================
-    # TOTAL SALES
-    # ==================================================
-
-    print("\nTotal Sales:")
+    print(
+        "\nTotal Sales:"
+    )
 
     print(
         round(
-            sales_analysis["total_sales"],
+            sales_analysis[
+                "total_sales"
+            ],
             2
         )
     )
 
     # ==================================================
-    # MONTHLY SALES
+    # SAVE SALES REPORTS
     # ==================================================
 
     monthly_sales = sales_analysis[
         "monthly_sales"
     ]
-
-    print("\nMonthly Sales:")
-
-    print(monthly_sales)
-
-    monthly_sales.to_csv(
-        DATA_DIR / "monthly_sales.csv",
-        index=False
-    )
-
-    # ==================================================
-    # BEST SELLING PRODUCTS
-    # ==================================================
 
     best_selling_products = (
         sales_analysis[
@@ -275,41 +336,11 @@ def main():
         ]
     )
 
-    print("\nBest Selling Products:")
-
-    print(
-        best_selling_products.head(10)
-    )
-
-    best_selling_products.to_csv(
-        DATA_DIR / "best_selling_products.csv",
-        index=False
-    )
-
-    # ==================================================
-    # CUSTOMER SPENDING
-    # ==================================================
-
     customer_spending = (
         sales_analysis[
             "customer_spending"
         ]
     )
-
-    print("\nCustomer Spending:")
-
-    print(
-        customer_spending.head(10)
-    )
-
-    customer_spending.to_csv(
-        DATA_DIR / "customer_spending.csv",
-        index=False
-    )
-
-    # ==================================================
-    # PRODUCT REVENUE
-    # ==================================================
 
     product_revenue = (
         sales_analysis[
@@ -317,10 +348,25 @@ def main():
         ]
     )
 
-    print("\nProduct Revenue:")
+    category_sales = (
+        sales_analysis[
+            "category_sales"
+        ]
+    )
 
-    print(
-        product_revenue.head(10)
+    monthly_sales.to_csv(
+        DATA_DIR / "monthly_sales.csv",
+        index=False
+    )
+
+    best_selling_products.to_csv(
+        DATA_DIR / "best_selling_products.csv",
+        index=False
+    )
+
+    customer_spending.to_csv(
+        DATA_DIR / "customer_spending.csv",
+        index=False
     )
 
     product_revenue.to_csv(
@@ -328,36 +374,72 @@ def main():
         index=False
     )
 
-    # ==================================================
-    # CATEGORY SALES
-    # ==================================================
-
-    category_sales = (
-        sales_analysis[
-            "category_sales"
-        ]
-    )
-
-    print("\nCategory Sales:")
-
-    print(category_sales)
-
     category_sales.to_csv(
         DATA_DIR / "category_sales.csv",
         index=False
     )
 
     print(
-        "Sales analytics saved successfully!"
+        "\nMonthly Sales:"
+    )
+
+    print(
+        monthly_sales
+    )
+
+    print(
+        "\nBest Selling Products:"
+    )
+
+    print(
+        best_selling_products.head(
+            10
+        )
+    )
+
+    print(
+        "\nCustomer Spending:"
+    )
+
+    print(
+        customer_spending.head(
+            10
+        )
+    )
+
+    print(
+        "\nProduct Revenue:"
+    )
+
+    print(
+        product_revenue.head(
+            10
+        )
+    )
+
+    print(
+        "\nCategory Sales:"
+    )
+
+    print(
+        category_sales
     )
 
     # ==================================================
     # BUSINESS SUMMARY
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("BUSINESS SUMMARY")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "BUSINESS SUMMARY"
+    )
+
+    print(
+        "=" * 50
+    )
 
     total_sales = sales[
         "TotalSales"
@@ -381,17 +463,25 @@ def main():
 
     print(
         "Total Sales: $",
-        round(total_sales, 2)
+        round(
+            total_sales,
+            2
+        )
     )
 
     print(
         "Average Sale: $",
-        round(average_sale, 2)
+        round(
+            average_sale,
+            2
+        )
     )
 
     print(
         "Units Sold:",
-        int(units_sold)
+        int(
+            units_sold
+        )
     )
 
     print(
@@ -408,9 +498,17 @@ def main():
     # DATABASE
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("DATABASE")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "DATABASE"
+    )
+
+    print(
+        "=" * 50
+    )
 
     Base.metadata.create_all(
         bind=engine
@@ -461,21 +559,29 @@ def main():
     # SALES FORECASTING
     # ==================================================
 
-    print("\n" + "=" * 50)
-    print("SALES FORECASTING")
-    print("=" * 50)
+    print(
+        "\n" + "=" * 50
+    )
+
+    print(
+        "SALES FORECASTING"
+    )
+
+    print(
+        "=" * 50
+    )
 
     daily_sales = prepare_sales_data(
         sales
     )
 
-    print("\nDaily sales data:")
+    print(
+        "\nDaily sales data:"
+    )
 
     print(
         daily_sales.head()
     )
-
-    # Train model
 
     model = train_sales_model(
         daily_sales
@@ -485,8 +591,6 @@ def main():
         "\nSales forecasting model "
         "trained successfully!"
     )
-
-    # Predict seven days
 
     forecast = predict_sales(
         model,
@@ -498,12 +602,12 @@ def main():
     )
 
     print(
-        forecast.tail(7).to_string(
+        forecast.tail(
+            7
+        ).to_string(
             index=False
         )
     )
-
-    # Save forecast
 
     save_forecast(
         forecast,
@@ -513,8 +617,6 @@ def main():
     print(
         "\nSales forecast saved successfully!"
     )
-
-    # Forecast visualization
 
     print(
         "\nCreating Actual vs "
@@ -531,9 +633,6 @@ def main():
 
     except TypeError:
 
-        # Compatibility if your old function
-        # still accepts only two arguments.
-
         plot_actual_vs_predicted(
             daily_sales,
             forecast
@@ -545,7 +644,7 @@ def main():
 
 
 # ==================================================
-# LOCAL BUSINESS QUESTION FUNCTION
+# LOCAL CHATBOT ANSWERS
 # ==================================================
 
 def answer_local_business_question(
@@ -561,38 +660,60 @@ def answer_local_business_question(
     finance_profit
 ):
 
-    # Normalize wording.
-
     question_lower = (
         question
         .lower()
         .strip()
-        .replace("_", " ")
+        .replace(
+            "_",
+            " "
+        )
     )
 
     # ==================================================
-    # TOTAL REVENUE / TOTAL SALES / TOTAL AMOUNT
+    # FINANCE REVENUE
     # ==================================================
 
     if (
-        "revenue" in question_lower
-        and "finance" not in question_lower
+        "finance revenue"
+        in question_lower
+        or
+        "financial revenue"
+        in question_lower
     ):
 
         return (
-            f"The total revenue is "
-            f"${total_revenue:,.2f}."
+            f"The finance dataset reports "
+            f"${finance_revenue:,.2f} "
+            f"in revenue."
         )
 
+    # ==================================================
+    # SALES REVENUE
+    # ==================================================
+
     if (
-        "total sales" in question_lower
-        or "totalsales" in question_lower
-        or "total amount" in question_lower
-        or "totalamount" in question_lower
+        "total revenue"
+        in question_lower
+        or
+        "total sales"
+        in question_lower
+        or
+        "totalsales"
+        in question_lower
+        or
+        "total amount"
+        in question_lower
+        or
+        "totalamount"
+        in question_lower
+        or
+        question_lower
+        == "revenue"
     ):
 
         return (
-            f"The total revenue is "
+            f"The total sales revenue is "
             f"${total_revenue:,.2f}."
         )
 
@@ -600,18 +721,24 @@ def answer_local_business_question(
     # ORDERS
     # ==================================================
 
-    if "order" in question_lower:
+    if (
+        "order"
+        in question_lower
+    ):
 
         return (
-            f"The total number of orders is "
-            f"{total_orders:,}."
+            f"The total number of orders "
+            f"is {total_orders:,}."
         )
 
     # ==================================================
     # CUSTOMERS
     # ==================================================
 
-    if "customer" in question_lower:
+    if (
+        "customer"
+        in question_lower
+    ):
 
         return (
             f"There are "
@@ -620,17 +747,30 @@ def answer_local_business_question(
         )
 
     # ==================================================
-    # QUANTITY / ITEMS / UNITS
+    # QUANTITY
     # ==================================================
 
     if (
-        "quantity" in question_lower
-        or "items sold" in question_lower
-        or "item sold" in question_lower
-        or "units sold" in question_lower
-        or "unit sold" in question_lower
-        or "how many items" in question_lower
-        or "how many units" in question_lower
+        "quantity"
+        in question_lower
+        or
+        "items sold"
+        in question_lower
+        or
+        "item sold"
+        in question_lower
+        or
+        "units sold"
+        in question_lower
+        or
+        "unit sold"
+        in question_lower
+        or
+        "how many items"
+        in question_lower
+        or
+        "how many units"
+        in question_lower
     ):
 
         return (
@@ -643,17 +783,26 @@ def answer_local_business_question(
     # ==================================================
 
     if (
-        "top product" in question_lower
-        or "best product" in question_lower
-        or "best selling product" in question_lower
-        or "best-selling product" in question_lower
-        or "highest revenue product" in question_lower
-        or "most revenue product" in question_lower
+        "top product"
+        in question_lower
+        or
+        "best product"
+        in question_lower
+        or
+        "best selling product"
+        in question_lower
+        or
+        "best-selling product"
+        in question_lower
+        or
+        "highest revenue product"
+        in question_lower
     ):
 
         return (
             f"The top product by revenue is "
-            f"{top_product_name}, with revenue of "
+            f"{top_product_name}, with "
+            f"revenue of "
             f"${top_product_revenue:,.2f}."
         )
 
@@ -661,7 +810,10 @@ def answer_local_business_question(
     # EXPENSES
     # ==================================================
 
-    if "expense" in question_lower:
+    if (
+        "expense"
+        in question_lower
+    ):
 
         return (
             f"The total expenses are "
@@ -672,30 +824,97 @@ def answer_local_business_question(
     # PROFIT
     # ==================================================
 
-    if "profit" in question_lower:
+    if (
+        "profit"
+        in question_lower
+    ):
 
         return (
             f"The total profit is "
             f"${finance_profit:,.2f}."
         )
 
-    # ==================================================
-    # FINANCE REVENUE
-    # ==================================================
+    return None
 
-    if (
-        "finance revenue" in question_lower
-        or "financial revenue" in question_lower
-    ):
 
-        return (
-            f"The finance dataset reports "
-            f"${finance_revenue:,.2f} in revenue."
+# ==================================================
+# SECTION HEADER
+# ==================================================
+
+def section_header(
+    icon,
+    title,
+    description=None
+):
+
+    if description:
+
+        html = f"""
+<div class="section-heading">
+    <h2>{icon} {title}</h2>
+    <p>{description}</p>
+</div>
+"""
+
+    else:
+
+        html = f"""
+<div class="section-heading">
+    <h2>{icon} {title}</h2>
+</div>
+"""
+
+    render_html(
+        html
+    )
+
+
+# ==================================================
+# PLOTLY CHART STYLE
+# ==================================================
+
+def style_chart(
+    figure,
+    height=None
+):
+
+    figure.update_layout(
+
+        template="plotly_dark",
+
+        paper_bgcolor=(
+            "rgba(0,0,0,0)"
+        ),
+
+        plot_bgcolor=(
+            "rgba(0,0,0,0)"
+        ),
+
+        font=dict(
+            size=13
+        ),
+
+        title=dict(
+            font=dict(
+                size=19
+            )
+        ),
+
+        margin=dict(
+            l=20,
+            r=20,
+            t=60,
+            b=20
+        )
+    )
+
+    if height:
+
+        figure.update_layout(
+            height=height
         )
 
-    # No local answer available.
-
-    return None
+    return figure
 
 
 # ==================================================
@@ -705,7 +924,7 @@ def answer_local_business_question(
 def run_dashboard():
 
     # ==================================================
-    # PAGE CONFIGURATION
+    # PAGE CONFIG
     # ==================================================
 
     st.set_page_config(
@@ -717,7 +936,143 @@ def run_dashboard():
     )
 
     # ==================================================
-    # LOAD DASHBOARD DATA
+    # CUSTOM CSS
+    # ==================================================
+
+    st.html(
+        """
+<style>
+
+.stApp {
+    background-color: #0E1117;
+}
+
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    max-width: 1500px;
+}
+
+h1 {
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-weight: 750 !important;
+}
+
+h3 {
+    font-weight: 700 !important;
+}
+
+.section-heading {
+    margin-top: 18px;
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    margin-bottom: 4px;
+    font-size: 28px;
+}
+
+.section-heading p {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #8E9AAF;
+    font-size: 15px;
+}
+
+div[data-testid="stMetric"] {
+    background: linear-gradient(
+        135deg,
+        #171B24,
+        #202633
+    );
+
+    border: 1px solid #2E3645;
+    padding: 20px;
+    border-radius: 16px;
+
+    box-shadow:
+        0px 6px 20px
+        rgba(0,0,0,0.20);
+
+    transition: all 0.25s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-4px);
+    border-color: #5B8DEF;
+
+    box-shadow:
+        0px 10px 30px
+        rgba(0,0,0,0.35);
+}
+
+div[data-testid="stMetricLabel"] {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+div[data-testid="stMetricValue"] {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #151922;
+    border-right: 1px solid #2A303C;
+}
+
+.stButton > button {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #394150;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    border-color: #5B8DEF;
+    transform: translateY(-2px);
+}
+
+.stDownloadButton > button {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 18px;
+}
+
+div[data-testid="stDataFrame"] {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2E3645;
+}
+
+div[data-testid="stChatMessage"] {
+    border: 1px solid #252C38;
+    border-radius: 15px;
+    padding: 8px;
+}
+
+button[data-baseweb="tab"] {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+hr {
+    border-color: #272D38;
+}
+
+</style>
+"""
+    )
+
+    # ==================================================
+    # LOAD DATA
     # ==================================================
 
     @st.cache_data
@@ -774,13 +1129,23 @@ def run_dashboard():
     # REVENUE COLUMN
     # ==================================================
 
-    if "TotalSales" in sales.columns:
+    if (
+        "TotalSales"
+        in sales.columns
+    ):
 
-        revenue_column = "TotalSales"
+        revenue_column = (
+            "TotalSales"
+        )
 
-    elif "TotalAmount" in sales.columns:
+    elif (
+        "TotalAmount"
+        in sales.columns
+    ):
 
-        revenue_column = "TotalAmount"
+        revenue_column = (
+            "TotalAmount"
+        )
 
     else:
 
@@ -792,37 +1157,47 @@ def run_dashboard():
         st.stop()
 
     # ==================================================
-    # HEADER
+    # SIDEBAR HEADER
     # ==================================================
 
-    st.title(
-        "📊 AI Business Analytics Dashboard"
-    )
+    st.sidebar.html(
+        """
+<div style="
+    text-align:center;
+    padding:15px 5px 20px 5px;
+">
 
-    st.write(
-        "Sales, Customer, Product, Inventory "
-        "and Financial Analytics"
-    )
+    <div style="font-size:44px;">
+        📊
+    </div>
 
-    st.divider()
+    <h2 style="margin-bottom:3px;">
+        Business AI
+    </h2>
 
-    # ==================================================
-    # SIDEBAR
-    # ==================================================
+    <p style="
+        color:#8E9AAF;
+        margin-top:0;
+    ">
+        Analytics Platform
+    </p>
 
-    st.sidebar.title(
-        "🎛 Dashboard Controls"
+</div>
+"""
     )
 
     st.sidebar.subheader(
         "Filters"
     )
 
-    # Category filter
+    # ==================================================
+    # CATEGORY FILTER
+    # ==================================================
 
     categories = (
         ["All"]
-        + sorted(
+        +
+        sorted(
             products[
                 "Category"
             ]
@@ -834,27 +1209,34 @@ def run_dashboard():
 
     selected_category = (
         st.sidebar.selectbox(
-            "Select Category",
+            "Product Category",
             categories
         )
     )
 
     # ==================================================
-    # APPLY CATEGORY FILTER
+    # APPLY FILTER
     # ==================================================
 
-    if selected_category != "All":
+    if (
+        selected_category
+        != "All"
+    ):
 
         filtered_products = (
             products[
-                products["Category"]
+                products[
+                    "Category"
+                ]
                 == selected_category
             ].copy()
         )
 
         filtered_sales = (
             sales[
-                sales["ProductID"].isin(
+                sales[
+                    "ProductID"
+                ].isin(
                     filtered_products[
                         "ProductID"
                     ]
@@ -873,13 +1255,13 @@ def run_dashboard():
         )
 
     # ==================================================
-    # SIDEBAR SECTIONS
+    # SIDEBAR NAVIGATION
     # ==================================================
 
     st.sidebar.divider()
 
-    st.sidebar.subheader(
-        "Dashboard Sections"
+    st.sidebar.markdown(
+        "### Dashboard"
     )
 
     st.sidebar.write(
@@ -895,7 +1277,15 @@ def run_dashboard():
     )
 
     st.sidebar.write(
+        "🎯 Recommendation System"
+    )
+
+    st.sidebar.write(
         "🔮 Sales Forecast"
+    )
+
+    st.sidebar.write(
+        "💵 Financial Overview"
     )
 
     st.sidebar.write(
@@ -908,12 +1298,61 @@ def run_dashboard():
 
     st.sidebar.divider()
 
-    if st.sidebar.button(
-        "🔄 Refresh Dashboard"
+    if (
+        st.sidebar.button(
+            "🔄 Refresh Dashboard"
+        )
     ):
 
         st.cache_data.clear()
+
         st.rerun()
+
+    # ==================================================
+    # MAIN HEADER
+    # ==================================================
+
+    st.html(
+        """
+<div style="
+    padding:28px 30px;
+    border-radius:20px;
+    background:linear-gradient(
+        135deg,
+        #1B2230,
+        #11151D
+    );
+    border:1px solid #2C3545;
+    margin-bottom:15px;
+    box-shadow:
+        0px 8px 30px
+        rgba(0,0,0,0.20);
+">
+
+    <h1 style="
+        margin-bottom:8px;
+        font-size:42px;
+    ">
+        📊 AI Business Analytics Dashboard
+    </h1>
+
+    <p style="
+        font-size:17px;
+        color:#AEB8C7;
+        margin-bottom:0;
+    ">
+        Sales • Customers • Products •
+        Recommendations • Forecasting • Finance
+    </p>
+
+</div>
+"""
+    )
+
+    st.caption(
+        "🟢 Dashboard online • "
+        "Latest business data loaded successfully"
+    )
 
     # ==================================================
     # KPI CALCULATIONS
@@ -947,8 +1386,10 @@ def run_dashboard():
     # BUSINESS OVERVIEW
     # ==================================================
 
-    st.subheader(
-        "📌 Business Overview"
+    section_header(
+        "📌",
+        "Business Overview",
+        "Key performance indicators for the selected business data."
     )
 
     col1, col2, col3, col4 = (
@@ -958,28 +1399,28 @@ def run_dashboard():
     with col1:
 
         st.metric(
-            "💰 Total Revenue",
-            f"${total_revenue:,.2f}"
+            "💰 REVENUE",
+            f"${total_revenue:,.0f}"
         )
 
     with col2:
 
         st.metric(
-            "🛒 Total Orders",
+            "🛒 ORDERS",
             f"{total_orders:,}"
         )
 
     with col3:
 
         st.metric(
-            "👥 Customers",
+            "👥 CUSTOMERS",
             f"{total_customers:,}"
         )
 
     with col4:
 
         st.metric(
-            "📦 Items Sold",
+            "📦 UNITS SOLD",
             f"{total_quantity:,.0f}"
         )
 
@@ -989,8 +1430,10 @@ def run_dashboard():
     # SALES PERFORMANCE
     # ==================================================
 
-    st.subheader(
-        "📈 Sales Performance"
+    section_header(
+        "📈",
+        "Sales Performance",
+        "Track monthly revenue trends and category performance."
     )
 
     filtered_sales[
@@ -1002,25 +1445,29 @@ def run_dashboard():
         errors="coerce"
     )
 
-    # ==================================================
-    # MONTHLY SALES
-    # ==================================================
-
     monthly_data = (
         filtered_sales
         .dropna(
-            subset=["SaleDate"]
+            subset=[
+                "SaleDate"
+            ]
         )
         .copy()
     )
 
-    monthly_data["Month"] = (
+    monthly_data[
+        "Month"
+    ] = (
         monthly_data[
             "SaleDate"
         ]
         .dt
-        .to_period("M")
-        .astype(str)
+        .to_period(
+            "M"
+        )
+        .astype(
+            str
+        )
     )
 
     monthly_sales = (
@@ -1028,26 +1475,39 @@ def run_dashboard():
         .groupby(
             "Month",
             as_index=False
-        )[revenue_column]
+        )[
+            revenue_column
+        ]
         .sum()
     )
+
+    # ==================================================
+    # MONTHLY CHART
+    # ==================================================
 
     fig_monthly = px.line(
         monthly_sales,
         x="Month",
         y=revenue_column,
         markers=True,
-        title="Monthly Revenue Trend"
+        title=(
+            "Monthly Revenue Trend"
+        )
     )
 
     fig_monthly.update_layout(
-        template="plotly_white",
         xaxis_title="Month",
-        yaxis_title="Revenue"
+        yaxis_title="Revenue",
+        hovermode="x unified"
+    )
+
+    fig_monthly = style_chart(
+        fig_monthly,
+        height=420
     )
 
     # ==================================================
-    # CATEGORY SALES
+    # CATEGORY CHART
     # ==================================================
 
     category_sales = (
@@ -1065,7 +1525,9 @@ def run_dashboard():
         .groupby(
             "Category",
             as_index=False
-        )[revenue_column]
+        )[
+            revenue_column
+        ]
         .sum()
     )
 
@@ -1073,14 +1535,16 @@ def run_dashboard():
         category_sales,
         names="Category",
         values=revenue_column,
+        hole=0.35,
         title=(
-            "Revenue Distribution by Category"
+            "Revenue by Category"
         )
     )
 
-    # ==================================================
-    # SHOW SALES CHARTS
-    # ==================================================
+    fig_category = style_chart(
+        fig_category,
+        height=420
+    )
 
     chart1, chart2 = (
         st.columns(2)
@@ -1106,8 +1570,10 @@ def run_dashboard():
     # PRODUCT PERFORMANCE
     # ==================================================
 
-    st.subheader(
-        "📦 Product Performance"
+    section_header(
+        "📦",
+        "Product Performance",
+        "Identify products generating the highest sales revenue."
     )
 
     product_sales = (
@@ -1125,7 +1591,9 @@ def run_dashboard():
         .groupby(
             "ProductName",
             as_index=False
-        )[revenue_column]
+        )[
+            revenue_column
+        ]
         .sum()
         .sort_values(
             revenue_column,
@@ -1134,20 +1602,32 @@ def run_dashboard():
     )
 
     top_products = (
-        product_sales.head(15)
+        product_sales
+        .head(10)
+        .sort_values(
+            revenue_column,
+            ascending=True
+        )
     )
 
     fig_products = px.bar(
         top_products,
-        x="ProductName",
-        y=revenue_column,
-        title="Revenue by Product"
+        x=revenue_column,
+        y="ProductName",
+        orientation="h",
+        title=(
+            "Top 10 Products by Revenue"
+        )
     )
 
     fig_products.update_layout(
-        template="plotly_white",
-        xaxis_title="Product",
-        yaxis_title="Revenue"
+        xaxis_title="Revenue",
+        yaxis_title=""
+    )
+
+    fig_products = style_chart(
+        fig_products,
+        height=500
     )
 
     st.plotly_chart(
@@ -1158,11 +1638,350 @@ def run_dashboard():
     st.divider()
 
     # ==================================================
+    # RECOMMENDATION SYSTEM
+    # ==================================================
+
+    section_header(
+        "🎯",
+        "Product Recommendation System",
+        "Explore product relationships and personalized suggestions."
+    )
+
+    rec1, rec2, rec3 = (
+        st.columns(3)
+    )
+
+    with rec1:
+
+        st.info(
+            "🔎 **Similar Products**\n\n"
+            "Finds products belonging "
+            "to the same category."
+        )
+
+    with rec2:
+
+        st.info(
+            "🛒 **Bought Together**\n\n"
+            "Finds products appearing "
+            "in the same orders."
+        )
+
+    with rec3:
+
+        st.info(
+            "👤 **Personalized**\n\n"
+            "Suggests products based "
+            "on customer purchase history."
+        )
+
+    tab1, tab2, tab3 = st.tabs(
+        [
+            "🔎 Similar Products",
+            "🛒 Frequently Bought Together",
+            "👤 Personalized"
+        ]
+    )
+
+    # ==================================================
+    # PRODUCT LOOKUP
+    # ==================================================
+
+    product_options = (
+        products[
+            [
+                "ProductID",
+                "ProductName"
+            ]
+        ]
+        .drop_duplicates(
+            subset="ProductID"
+        )
+        .sort_values(
+            "ProductName"
+        )
+    )
+
+    product_lookup = {}
+
+    for _, row in (
+        product_options.iterrows()
+    ):
+
+        label = (
+            f"{row['ProductName']} "
+            f"(ID: "
+            f"{int(row['ProductID'])})"
+        )
+
+        product_lookup[
+            label
+        ] = row[
+            "ProductID"
+        ]
+
+    # ==================================================
+    # TAB 1 - SIMILAR PRODUCTS
+    # ==================================================
+
+    with tab1:
+
+        if product_lookup:
+
+            selected_product_label = (
+                st.selectbox(
+                    "Select a product",
+                    list(
+                        product_lookup.keys()
+                    ),
+                    key=(
+                        "similar_products"
+                    )
+                )
+            )
+
+            selected_product_id = (
+                product_lookup[
+                    selected_product_label
+                ]
+            )
+
+            similar_results = (
+                recommend_similar_products(
+                    products,
+                    selected_product_id,
+                    n=5
+                )
+            )
+
+            if (
+                similar_results.empty
+            ):
+
+                st.info(
+                    "No similar products found."
+                )
+
+            else:
+
+                display_columns = [
+                    column
+                    for column in [
+                        "ProductID",
+                        "ProductName",
+                        "Category",
+                        "Price"
+                    ]
+                    if column
+                    in similar_results.columns
+                ]
+
+                st.dataframe(
+                    similar_results[
+                        display_columns
+                    ],
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+        else:
+
+            st.info(
+                "No products are available."
+            )
+
+    # ==================================================
+    # TAB 2 - FREQUENTLY BOUGHT TOGETHER
+    # ==================================================
+
+    with tab2:
+
+        if product_lookup:
+
+            selected_frequent_label = (
+                st.selectbox(
+                    "Select a product",
+                    list(
+                        product_lookup.keys()
+                    ),
+                    key=(
+                        "frequent_products"
+                    )
+                )
+            )
+
+            selected_frequent_id = (
+                product_lookup[
+                    selected_frequent_label
+                ]
+            )
+
+            frequent_results = (
+                frequently_bought_together(
+                    sales,
+                    selected_frequent_id,
+                    n=5
+                )
+            )
+
+            if (
+                frequent_results.empty
+            ):
+
+                st.info(
+                    "No frequently bought together "
+                    "products were found. "
+                    "This can happen when each order "
+                    "contains only one product."
+                )
+
+            else:
+
+                frequent_results = (
+                    frequent_results.merge(
+                        products[
+                            [
+                                "ProductID",
+                                "ProductName",
+                                "Category"
+                            ]
+                        ]
+                        .drop_duplicates(
+                            subset="ProductID"
+                        ),
+                        on="ProductID",
+                        how="left"
+                    )
+                )
+
+                st.dataframe(
+                    frequent_results[
+                        [
+                            "ProductID",
+                            "ProductName",
+                            "Category",
+                            "Frequency"
+                        ]
+                    ],
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+    # ==================================================
+    # TAB 3 - PERSONALIZED
+    # ==================================================
+
+    with tab3:
+
+        customer_options = (
+            customers[
+                [
+                    "CustomerID",
+                    "CustomerName"
+                ]
+            ]
+            .drop_duplicates(
+                subset="CustomerID"
+            )
+            .sort_values(
+                "CustomerName"
+            )
+        )
+
+        customer_lookup = {}
+
+        for _, row in (
+            customer_options.iterrows()
+        ):
+
+            label = (
+                f"{row['CustomerName']} "
+                f"(ID: "
+                f"{int(row['CustomerID'])})"
+            )
+
+            customer_lookup[
+                label
+            ] = row[
+                "CustomerID"
+            ]
+
+        if customer_lookup:
+
+            selected_customer_label = (
+                st.selectbox(
+                    "Select a customer",
+                    list(
+                        customer_lookup.keys()
+                    ),
+                    key=(
+                        "customer_recommendations"
+                    )
+                )
+            )
+
+            selected_customer_id = (
+                customer_lookup[
+                    selected_customer_label
+                ]
+            )
+
+            personalized_results = (
+                personalized_recommendations(
+                    sales,
+                    products,
+                    selected_customer_id,
+                    n=5
+                )
+            )
+
+            if (
+                personalized_results.empty
+            ):
+
+                st.info(
+                    "No personalized recommendations "
+                    "were found for this customer."
+                )
+
+            else:
+
+                display_columns = [
+                    column
+                    for column in [
+                        "ProductID",
+                        "ProductName",
+                        "Category",
+                        "Price"
+                    ]
+                    if column
+                    in personalized_results.columns
+                ]
+
+                st.dataframe(
+                    personalized_results[
+                        display_columns
+                    ],
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+        else:
+
+            st.info(
+                "No customers are available."
+            )
+
+    st.divider()
+
+    # ==================================================
     # SALES FORECAST
     # ==================================================
 
-    st.subheader(
-        "🔮 Sales Forecast"
+    section_header(
+        "🔮",
+        "Sales Forecast",
+        "Machine-learning estimates for upcoming sales."
     )
 
     forecast_file = (
@@ -1170,21 +1989,27 @@ def run_dashboard():
         / "sales_forecast.csv"
     )
 
-    if forecast_file.exists():
+    if (
+        forecast_file.exists()
+    ):
 
         forecast = pd.read_csv(
             forecast_file
         )
 
-        forecast["ds"] = (
-            pd.to_datetime(
-                forecast["ds"],
-                errors="coerce"
-            )
+        forecast[
+            "ds"
+        ] = pd.to_datetime(
+            forecast[
+                "ds"
+            ],
+            errors="coerce"
         )
 
         sales_dates = pd.to_datetime(
-            sales["SaleDate"],
+            sales[
+                "SaleDate"
+            ],
             errors="coerce"
         )
 
@@ -1194,30 +2019,48 @@ def run_dashboard():
 
         future_forecast = (
             forecast[
-                forecast["ds"]
+                forecast[
+                    "ds"
+                ]
                 > last_sale_date
             ]
-            .sort_values("ds")
-            .head(7)
+            .sort_values(
+                "ds"
+            )
+            .head(
+                7
+            )
         )
 
-        if not future_forecast.empty:
+        if (
+            not
+            future_forecast.empty
+        ):
 
-            fig_forecast = px.line(
-                future_forecast,
-                x="ds",
-                y="yhat",
-                markers=True,
-                title=(
-                    "Next 7 Days Sales Forecast"
+            fig_forecast = (
+                px.line(
+                    future_forecast,
+                    x="ds",
+                    y="yhat",
+                    markers=True,
+                    title=(
+                        "Next 7 Days "
+                        "Sales Forecast"
+                    )
                 )
             )
 
             fig_forecast.update_layout(
-                template="plotly_white",
                 xaxis_title="Date",
                 yaxis_title=(
                     "Predicted Revenue"
+                )
+            )
+
+            fig_forecast = (
+                style_chart(
+                    fig_forecast,
+                    height=440
                 )
             )
 
@@ -1270,72 +2113,93 @@ def run_dashboard():
             "to generate the forecast."
         )
 
-    st.caption(
-        "The forecast represents overall "
-        "business sales."
-    )
-
     st.divider()
 
     # ==================================================
     # FINANCIAL OVERVIEW
     # ==================================================
 
-    st.subheader(
-        "💵 Financial Overview"
+    section_header(
+        "💵",
+        "Financial Overview",
+        "Review revenue, expenses and overall profit."
     )
 
     finance_revenue = 0
     finance_expenses = 0
     finance_profit = 0
 
-    if "Revenue" in finance.columns:
+    if (
+        "Revenue"
+        in finance.columns
+    ):
 
         finance_revenue = (
-            finance["Revenue"].sum()
+            finance[
+                "Revenue"
+            ].sum()
         )
 
-    if "Expenses" in finance.columns:
+    if (
+        "Expenses"
+        in finance.columns
+    ):
 
         finance_expenses = (
-            finance["Expenses"].sum()
+            finance[
+                "Expenses"
+            ].sum()
         )
 
-    if "Profit" in finance.columns:
+    if (
+        "Profit"
+        in finance.columns
+    ):
 
         finance_profit = (
-            finance["Profit"].sum()
+            finance[
+                "Profit"
+            ].sum()
         )
 
     elif (
-        "Revenue" in finance.columns
+        "Revenue"
+        in finance.columns
         and
-        "Expenses" in finance.columns
+        "Expenses"
+        in finance.columns
     ):
 
         finance_profit = (
             finance_revenue
-            - finance_expenses
+            -
+            finance_expenses
         )
 
     fin1, fin2, fin3 = (
         st.columns(3)
     )
 
-    fin1.metric(
-        "Revenue",
-        f"${finance_revenue:,.2f}"
-    )
+    with fin1:
 
-    fin2.metric(
-        "Expenses",
-        f"${finance_expenses:,.2f}"
-    )
+        st.metric(
+            "💰 REVENUE",
+            f"${finance_revenue:,.0f}"
+        )
 
-    fin3.metric(
-        "Profit",
-        f"${finance_profit:,.2f}"
-    )
+    with fin2:
+
+        st.metric(
+            "💳 EXPENSES",
+            f"${finance_expenses:,.0f}"
+        )
+
+    with fin3:
+
+        st.metric(
+            "📊 PROFIT",
+            f"${finance_profit:,.0f}"
+        )
 
     st.divider()
 
@@ -1343,33 +2207,72 @@ def run_dashboard():
     # AI BUSINESS ASSISTANT
     # ==================================================
 
-    st.subheader(
-        "🤖 AI Business Assistant"
+    section_header(
+        "🤖",
+        "AI Business Assistant",
+        "Ask questions about your business performance."
     )
 
-    st.write(
-        "Ask questions about your business data."
+    st.html(
+        """
+<div style="
+    padding:18px;
+    background:#171C26;
+    border:1px solid #2D3646;
+    border-radius:15px;
+    margin-bottom:18px;
+">
+
+    <strong>
+        💡 Example questions
+    </strong>
+
+    <p style="
+        margin-top:15px;
+        line-height:2;
+    ">
+        • What is the total revenue?<br>
+        • What is the quantity sold?<br>
+        • How many customers are there?<br>
+        • What is the top product?<br>
+        • What are the total expenses?
+    </p>
+
+</div>
+"""
     )
 
     # ==================================================
     # TOP PRODUCT
     # ==================================================
 
-    top_product_name = "N/A"
-    top_product_revenue = 0
+    top_product_name = (
+        "N/A"
+    )
 
-    if not product_sales.empty:
+    top_product_revenue = (
+        0
+    )
+
+    if (
+        not
+        product_sales.empty
+    ):
 
         top_product_name = (
             product_sales.iloc[
                 0
-            ]["ProductName"]
+            ][
+                "ProductName"
+            ]
         )
 
         top_product_revenue = (
             product_sales.iloc[
                 0
-            ][revenue_column]
+            ][
+                revenue_column
+            ]
         )
 
     # ==================================================
@@ -1406,7 +2309,10 @@ ${finance_profit:,.2f}
     # CHAT HISTORY
     # ==================================================
 
-    if "messages" not in st.session_state:
+    if (
+        "messages"
+        not in st.session_state
+    ):
 
         st.session_state[
             "messages"
@@ -1419,11 +2325,15 @@ ${finance_profit:,.2f}
     ):
 
         with st.chat_message(
-            message["role"]
+            message[
+                "role"
+            ]
         ):
 
             st.write(
-                message["content"]
+                message[
+                    "content"
+                ]
             )
 
     # ==================================================
@@ -1437,16 +2347,19 @@ ${finance_profit:,.2f}
         )
     )
 
-    if user_question:
-
-        # Save user message
+    if (
+        user_question
+    ):
 
         st.session_state[
             "messages"
         ].append(
             {
-                "role": "user",
-                "content": user_question
+                "role":
+                    "user",
+
+                "content":
+                    user_question
             }
         )
 
@@ -1458,42 +2371,41 @@ ${finance_profit:,.2f}
                 user_question
             )
 
-        # ==================================================
-        # TRY LOCAL ANSWER FIRST
-        # ==================================================
-
-        answer = answer_local_business_question(
-            question=user_question,
-            total_revenue=total_revenue,
-            total_orders=total_orders,
-            total_customers=total_customers,
-            total_quantity=total_quantity,
-            top_product_name=top_product_name,
-            top_product_revenue=top_product_revenue,
-            finance_revenue=finance_revenue,
-            finance_expenses=finance_expenses,
-            finance_profit=finance_profit
+        answer = (
+            answer_local_business_question(
+                question=user_question,
+                total_revenue=total_revenue,
+                total_orders=total_orders,
+                total_customers=total_customers,
+                total_quantity=total_quantity,
+                top_product_name=top_product_name,
+                top_product_revenue=top_product_revenue,
+                finance_revenue=finance_revenue,
+                finance_expenses=finance_expenses,
+                finance_profit=finance_profit
+            )
         )
 
-        # ==================================================
-        # USE OPENAI ONLY IF LOCAL ANSWER NOT FOUND
-        # ==================================================
+        if (
+            answer is None
+        ):
 
-        if answer is None:
-
-            answer = ask_business_chatbot(
-                user_question,
-                business_context
+            answer = (
+                ask_business_chatbot(
+                    user_question,
+                    business_context
+                )
             )
-
-        # Save assistant response
 
         st.session_state[
             "messages"
         ].append(
             {
-                "role": "assistant",
-                "content": answer
+                "role":
+                    "assistant",
+
+                "content":
+                    answer
             }
         )
 
@@ -1509,8 +2421,10 @@ ${finance_profit:,.2f}
     # CLEAR CHAT
     # ==================================================
 
-    if st.button(
-        "🗑 Clear Chat"
+    if (
+        st.button(
+            "🗑 Clear Chat"
+        )
     ):
 
         st.session_state[
@@ -1525,8 +2439,10 @@ ${finance_profit:,.2f}
     # DETAILED SALES DATA
     # ==================================================
 
-    st.subheader(
-        "📋 Detailed Sales Data"
+    section_header(
+        "📋",
+        "Detailed Sales Data",
+        "Review individual sales transactions."
     )
 
     st.write(
@@ -1560,7 +2476,9 @@ ${finance_profit:,.2f}
             "📥 Download Sales Data"
         ),
         data=csv_data,
-        file_name="sales_report.csv",
+        file_name=(
+            "sales_report.csv"
+        ),
         mime="text/csv"
     )
 
@@ -1570,14 +2488,28 @@ ${finance_profit:,.2f}
 
     st.divider()
 
-    st.caption(
-        "AI Business Analytics Platform • "
-        "Sales & Business Intelligence Dashboard"
+    st.html(
+        """
+<div style="
+    text-align:center;
+    color:#7F8998;
+    padding:15px;
+">
+
+    AI Business Analytics Platform
+
+    <br>
+
+    Sales • Intelligence •
+    Forecasting • Recommendations
+
+</div>
+"""
     )
 
 
 # ==================================================
-# CHECK IF STREAMLIT IS RUNNING
+# CHECK IF RUNNING IN STREAMLIT
 # ==================================================
 
 def running_in_streamlit():
@@ -1604,13 +2536,18 @@ def running_in_streamlit():
 
 
 # ==================================================
-# RUN PROGRAM
+# RUN
 # ==================================================
 
-if running_in_streamlit():
+if (
+    running_in_streamlit()
+):
 
     run_dashboard()
 
-elif __name__ == "__main__":
+elif (
+    __name__
+    == "__main__"
+):
 
     main()

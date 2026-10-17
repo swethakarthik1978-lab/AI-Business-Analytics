@@ -1,15 +1,7 @@
-# ==================================================
-# IMPORTS
-# ==================================================
-
 import os
 
 from openai import OpenAI
 
-
-# ==================================================
-# BUSINESS CHATBOT
-# ==================================================
 
 def ask_business_chatbot(
     question,
@@ -17,7 +9,7 @@ def ask_business_chatbot(
 ):
 
     # ==================================================
-    # GET API KEY
+    # API KEY
     # ==================================================
 
     api_key = os.getenv(
@@ -31,10 +23,11 @@ def ask_business_chatbot(
     if not api_key:
 
         return (
-            "I could not answer that question using "
-            "the built-in dashboard calculations. "
-            "More advanced AI questions require "
-            "an OPENAI_API_KEY."
+            "I could not answer that question "
+            "using the built-in dashboard "
+            "calculations. More advanced AI "
+            "questions require an "
+            "OPENAI_API_KEY."
         )
 
     # ==================================================
@@ -48,19 +41,17 @@ def ask_business_chatbot(
         )
 
         prompt = f"""
-You are an AI Business Assistant for a
-business analytics dashboard.
+You are an AI Business Assistant.
 
-Answer the user's question using only the
-business information provided below.
+Use only the business information supplied below
+to answer the user's question.
 
-Do not invent numbers or statistics.
+Do not invent business numbers.
 
-If the requested information cannot be determined
-from the provided data, clearly say that there is
-not enough information.
+If the available data does not contain enough
+information to answer the question, clearly say so.
 
-BUSINESS INFORMATION:
+BUSINESS DATA:
 
 {business_context}
 
@@ -68,7 +59,7 @@ USER QUESTION:
 
 {question}
 
-Provide a concise and clear business answer.
+Give a concise and clear business-focused answer.
 """
 
         response = (
@@ -88,7 +79,7 @@ Provide a concise and clear business answer.
     except Exception as error:
 
         return (
-            "The AI assistant could not complete "
-            "the request. "
+            "The AI assistant could not "
+            "complete the request. "
             f"Error: {error}"
         )
